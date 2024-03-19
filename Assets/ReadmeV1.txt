@@ -30,3 +30,13 @@ White Text - Distance covered
 === PICKUP ===
 
 Gives player invincibility for 5 secs
+
+=== OBSTACLES ===
+
+Green - Obstacles you must dodge
+
+Magenta - Obstacles you must jump over
+
+Cyan - Obstacles you must slide under
+
+(The boxes are test prefabs, you can technically jump over all of them, when actual models are implemented they'll be higher)
