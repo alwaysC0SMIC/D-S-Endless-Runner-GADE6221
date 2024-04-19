@@ -12,6 +12,12 @@ TagManager:
   - BossInjureTrigger
   - AddScoreTrigger
   - ObstacleTrigger1
+  - Floor
+  - Boss
+  - BossTrigger
+  - Parry
+  - Enemy
+  - HealthTrigger
   layers:
   - Default
   - TransparentFX
@@ -19,8 +25,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Environment
+  - Camera
   - 
   - 
   - 
