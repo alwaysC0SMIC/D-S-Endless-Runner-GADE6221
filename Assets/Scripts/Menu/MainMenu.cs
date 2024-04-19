@@ -12,6 +12,8 @@ public class MainMenu : MonoBehaviour
     //private bool settingsMenu = false;
     //private bool htpMenu = false;
 
+    private LevelLoader lvlLoader;
+
     //INDEXING:
     // 1 - LEADERBOARD
     // 2 - HOW TO PLAY
@@ -21,18 +23,25 @@ public class MainMenu : MonoBehaviour
         gameObject.transform.GetChild(1).gameObject.SetActive(false);
         gameObject.transform.GetChild(2).gameObject.SetActive(false);
         gameObject.transform.GetChild(3).gameObject.SetActive(false);
+
+        lvlLoader = GameObject.Find("Transition").GetComponent<LevelLoader>();
     }
 
     //MENU BUTTON FUNCTIONS
     //STARTS GAME
     public void PlayButton() {
-        SceneManager.LoadSceneAsync(sceneName: "Game");
+        lvlLoader.PlayTransition();
+        Invoke("changeToGame", 0.5F);
         Time.timeScale = 1;
     }
 
     //CLOSES GAME
     public void CloseGame() {
         Application.Quit();
+    }
+
+    private void changeToGame() {
+        SceneManager.LoadSceneAsync(sceneName: "Game");
     }
 
     //OPENS HOW TO PLAY MENU

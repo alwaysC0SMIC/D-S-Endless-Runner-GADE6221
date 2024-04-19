@@ -27,9 +27,15 @@ White Text - Distance covered
 
 +10 for getting pickup
 
-=== PICKUP ===
++15 for defeating an enemy
 
-Gives player invincibility for 5 secs
++ 100 for defeating a boss
+
+=== PICKUPS ===
+
+Red: Gives player invincibility for 5 secs
+
+Green: Heals the player if they're damaged
 
 === OBSTACLES ===
 

@@ -8,11 +8,12 @@ using UnityEngine.UI;
 public class PlayerDodgeMovement : MonoBehaviour
 {
     //WORLD VARIABLE
-    //World world;
+    private World world;
 
     public bool isPaused = false;
     private bool hasStopped = false;
     private CameraShake shake;
+    private LevelLoader lvlLoader;
 
     //UI OBJECTS
     [SerializeField] private GameObject deathScreenUI;
@@ -73,7 +74,13 @@ public class PlayerDodgeMovement : MonoBehaviour
         //UNLOCKS PLAYER MOVEMENT AFTER EXITING HOUSE
         Invoke("unlockPlayerMovement", 2);
         shake = GameObject.Find("ISO CAMERA").GetComponent<CameraShake>();
-        //world = GameObject.Find("World").GetComponent<World>();
+        
+        lvlLoader = GameObject.Find("Transition").GetComponent<LevelLoader>();
+    }
+
+    private void Start()
+    {
+        world = GameObject.Find("World").GetComponent<World>();
     }
 
     void Update()
@@ -198,7 +205,6 @@ public class PlayerDodgeMovement : MonoBehaviour
         //PLAYER HP CHECK
         if (playerHP <= 0) {
             PlayerDeath();
-
             if (!hasStopped)
             {
                 deathSlowDown -= Time.deltaTime * 2;
@@ -331,15 +337,26 @@ public class PlayerDodgeMovement : MonoBehaviour
     public void RestartRun() {
         CancelInvoke("Shake");
         deathScreenUI.SetActive(false);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            lvlLoader.PlayTransition();
+        Invoke("changeToStart", 0.5F);
         isPaused = false;
-        Time.timeScale = 1;
         playerHP = 2;
+        Time.timeScale = 1;
     }
 
+    //EXITTING BACK TO MENU WITH TRANSITION
     public void ExitToMainMenu() {
-        SceneManager.LoadSceneAsync(sceneName: "MainMenu");
+            lvlLoader.PlayTransition();
+        Invoke("changeToMenu", 0.5F);
         Time.timeScale = 1;
+    }
+
+    private void changeToMenu() {
+        SceneManager.LoadSceneAsync(sceneName: "MainMenu");
+    }
+
+    private void changeToStart() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     //COROUTINES [NO LONGER NEEDED]:

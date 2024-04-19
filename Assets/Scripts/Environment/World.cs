@@ -31,19 +31,20 @@ public class World : MonoBehaviour
         //Debug.Log(gameSpeed);
         //Debug.Log(currentLevelCounter);
         //Debug.Log(activeBossHP);
-        introAcceleration();
+            introAcceleration();
 
-        //SPEEDS UP THE GAME SLIGHTLY EVERY FEW SECONDS
-        if (!gameSpeedTimeractive && gameSpeed < maxGameSpeed)
-        {
-            gameSpeedTimeractive = true;
-            Invoke("IncreaseSpeed", speedChangeTime);
-        }
+            //SPEEDS UP THE GAME SLIGHTLY EVERY FEW SECONDS
+            if (!gameSpeedTimeractive && gameSpeed < maxGameSpeed)
+            {
+                gameSpeedTimeractive = true;
+                Invoke("IncreaseSpeed", speedChangeTime);
+            }
 
 
-        if (currentLevelCounter >= numOfLevelsForBoss && !bossFight) {
-            bossFight = true;
-        }
+            if (currentLevelCounter >= numOfLevelsForBoss && !bossFight)
+            {
+                bossFight = true;
+            }
     }
 
     public void introAcceleration()

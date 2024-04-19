@@ -1,12 +1,10 @@
 External Assets/Packages Used:
 ==============================
 
+Not used:
 EZ Camera Shake - https://github.com/andersonaddo/EZ-Camera-Shake-Unity/releases/tag/v1.06
 Tutorial for shake: https://www.youtube.com/watch?v=9A9yj8KnM8c
 
-
-
-
-Native Unity Packages Used:
+Unity Packages Used:
 2D Sprite
 TextMeshPro

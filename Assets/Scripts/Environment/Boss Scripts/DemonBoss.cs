@@ -10,6 +10,7 @@ public class DemonBoss : MonoBehaviour
     public float bossHP;
     [SerializeField] Animator animator;
 
+    private CameraShake shake;
     private World world;
     PlayerDodgeMovement pdm;
 
@@ -21,14 +22,14 @@ public class DemonBoss : MonoBehaviour
 
     //BOSS ATTACK VARIABLES
     private bool attackBool = false;
-    private float minAttackTime = 2F;
-    private float maxAttackTime = 5F;
+    private float minAttackTime = 2F;   
+    private float maxAttackTime = 4F;
 
-    private float debrisOffset = 20F;
+    private float debrisOffset = 15F;
     private bool hasDebrisAttack = false;
 
     private float debrisTimerCounter;
-    private float debrisTimer = 5F;
+    private float debrisTimer = 4F;
 
     void Awake()
     {
@@ -37,6 +38,7 @@ public class DemonBoss : MonoBehaviour
         world = GameObject.Find("World").GetComponent<World>();
         target = GameObject.Find("PLAYER").transform;
         pdm = GameObject.Find("PLAYER").GetComponent<PlayerDodgeMovement>();
+        shake = GameObject.Find("ISO CAMERA").GetComponent<CameraShake>();
     }
 
     void Update()
@@ -96,8 +98,16 @@ public class DemonBoss : MonoBehaviour
 
     private void ExecuteAttack() {
 
-        //WILL BE TURNED INTO RANDOMISER FOR DIFFERENT ATTACKS
-        int attackTypeIndex = Random.Range(0, 3);
+        int attackTypeIndex;
+        //DOESNT TRIGGER DEBRIS ATTACK UNLESS BUFFER IS OVER
+        if (hasDebrisAttack)
+        {
+            attackTypeIndex = Random.Range(0, 1);
+        }
+        else
+        {
+            attackTypeIndex = Random.Range(0, 2);
+        }
 
         switch (attackTypeIndex)
         {
@@ -106,10 +116,8 @@ public class DemonBoss : MonoBehaviour
                 xAxisAttack();
                 break;
             case 1:
-                xAxisAttack();
-                break;
-            case 2:
                 debrisScatter();
+                Invoke("cameraShake", 1F);
                 break;
         }
         attackBool = false;
@@ -117,8 +125,8 @@ public class DemonBoss : MonoBehaviour
 
     //ATTACK LAUNCHED FROM BOSS ALONG X AXIS AT PLAYER (EITHER JUMP/SLIDE) - SOME ARE PARRIABLE
     private void xAxisAttack() {
-        int obstacleIndex = Random.Range(0, 3);
 
+        int obstacleIndex = Random.Range(0, 3);
         float projHeight = 1F;
 
         switch (obstacleIndex) {
@@ -134,28 +142,15 @@ public class DemonBoss : MonoBehaviour
 
         GameObject activeProjectile = Instantiate(bossProjectiles[obstacleIndex], new Vector3(-5F, projHeight, 0F), Quaternion.Euler(0, 0, 0));
         //Debug.Log("Spawned Projectile + " + activeProjectile.transform.position);
-        
     }
 
     private void debrisScatter() {
-
-        float offset = debrisOffset;
-
-        if (hasDebrisAttack)
-        {
-            offset = debrisOffset;
-        }
-        else {
-            offset = debrisOffset + 7F;
-        }
-
-
             //DEBRIS 1
             int obstacleIndex = Random.Range(4, bossProjectiles.Length);
             Instantiate(bossProjectiles[obstacleIndex], new Vector3(0F, 20F, debrisOffset), Quaternion.Euler(0, 0, 0));
             //DEBRIS 2
             obstacleIndex = Random.Range(4, bossProjectiles.Length);
-            Instantiate(bossProjectiles[obstacleIndex], new Vector3(0F, 20F, debrisOffset+7F), Quaternion.Euler(0, 0, 0));
+            Instantiate(bossProjectiles[obstacleIndex], new Vector3(0F, 20F, debrisOffset + 7F), Quaternion.Euler(0, 0, 0));
             //DEBRIS 3
             obstacleIndex = Random.Range(4, bossProjectiles.Length);
             Instantiate(bossProjectiles[obstacleIndex], new Vector3(0F, 20F, debrisOffset + 14F), Quaternion.Euler(0, 0, 0));
@@ -170,5 +165,9 @@ public class DemonBoss : MonoBehaviour
 
     public void ResetBossHP() {
         bossHP = maxBossHP;
+    }
+
+    private void cameraShake() {
+        shake.Shake();
     }
 }

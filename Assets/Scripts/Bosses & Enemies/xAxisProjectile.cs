@@ -66,6 +66,11 @@ public class xAxisProjectile : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        Time.timeScale = 1F;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player") && this.gameObject.CompareTag("Parry"))

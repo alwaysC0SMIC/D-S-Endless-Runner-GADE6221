@@ -10,7 +10,7 @@ public class SegmentTrigger : MonoBehaviour
     World world;
 
     //LEVEL VARIABLES
-    private Vector3 levelSpawnPos = new Vector3(1.66893e-06F, -8.076429e-06F, 68.50555F);
+    private Vector3 levelSpawnPos = new Vector3(0, 0, 68F);   //private Vector3 levelSpawnPos = new Vector3(1.66893e-06F, -8.076429e-06F, 68.50555F);
     private int levelIndex = 0;
     [SerializeField] GameObject[] levelSegments;
     [SerializeField] GameObject[] bossLevelSegments;

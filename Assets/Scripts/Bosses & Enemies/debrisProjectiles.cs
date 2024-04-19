@@ -17,7 +17,7 @@ public class debrisProjectiles : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        target = new Vector3(transform.position.x, 1F, transform.position.z);
+        target = new Vector3(transform.position.x, 1.5F, transform.position.z);
 
         if (transform.position != target)
         {
