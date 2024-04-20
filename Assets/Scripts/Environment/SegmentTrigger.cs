@@ -10,10 +10,11 @@ public class SegmentTrigger : MonoBehaviour
     World world;
 
     //LEVEL VARIABLES
-    private Vector3 levelSpawnPos = new Vector3(0, 0, 68F);   //private Vector3 levelSpawnPos = new Vector3(1.66893e-06F, -8.076429e-06F, 68.50555F);
+    private Vector3 levelSpawnPos = new Vector3(0, 0, 67.5F);   //private Vector3 levelSpawnPos = new Vector3(1.66893e-06F, -8.076429e-06F, 68.50555F);
     private int levelIndex = 0;
     [SerializeField] GameObject[] levelSegments;
     [SerializeField] GameObject[] bossLevelSegments;
+    [SerializeField] GameObject[] levelGates;
     private GameObject currentLevel;
 
     //OBSTACLES VARIABLES
@@ -35,6 +36,7 @@ public class SegmentTrigger : MonoBehaviour
     //BOSS VARIABLES
     public bool bossMode = false;
     public bool bossSpawn = false;
+    private GameObject currentBoss;
     [SerializeField] GameObject[] bosses;
     [SerializeField] GameObject bossSpawner;
     [SerializeField] GameObject bossUI;
@@ -43,7 +45,7 @@ public class SegmentTrigger : MonoBehaviour
     void Start()
     {
         int i = 0;
-        float startingVal = 46.34225F;
+        float startingVal = 50F;  //46.34225F;
         float rowDistance = 2F;
 
         while (i < 34)
@@ -69,6 +71,13 @@ public class SegmentTrigger : MonoBehaviour
             levelIndex = world.currentLevel;
             //Debug.Log(bossMode);
         }
+
+        //RESETS LEVEL ARRAY IF YOU REACH THE END OF IT
+        if (world.currentLevel == levelSegments.Length)
+        {
+            Debug.Log("You reached the end of levels, restarting cycle");
+            world.currentLevel = 0;
+        }
         
 
         if (distCounter != null) {
@@ -93,10 +102,10 @@ public class SegmentTrigger : MonoBehaviour
 
                 //NORMAL OBSTACLE GENERATION
                 generateRows(rowFilled);
-                fillRows(currentObs, zPosition);
+                fillRows(getObstaclesForLevel(levelIndex), zPosition);
                 addPickUps(pickupItem, false);
-
                 addEnemies(enemies, zPosition);
+                levelGateSpawn();
 
                 resetRows();
                 //Array.ForEach(rowFilled, i => Debug.Log(i));
@@ -200,6 +209,14 @@ public class SegmentTrigger : MonoBehaviour
         }
     }
 
+    public void levelGateSpawn() {
+        if (!world.levelGateSpawned) {
+            //GENERATE LEVEL GATE PREFAB
+            Instantiate(levelGates[0], new Vector3(0F, 0F, 54F), Quaternion.Euler(0, 0, 0));
+            world.levelGateSpawned = true;
+        }
+    }
+
     //RESETS THE ROWS FOR THE NEXT INSTANTIATION
     public void resetRows() {
         int i = 0;
@@ -213,16 +230,65 @@ public class SegmentTrigger : MonoBehaviour
     //METHODS TO GET LEVEL INDEX FROM ARRAYS
     public GameObject GetLevelSegment(int levelIndex)
     {
-        return levelSegments[levelIndex];
+        GameObject selectedLevel = null;
+        switch (levelIndex)
+        {
+            case 0:
+                selectedLevel = levelSegments[0];   //LEVEL 1
+                break;
+                case 1:
+                selectedLevel = levelSegments[1]; //LEVEL 2
+                break;
+            default:
+                selectedLevel = levelSegments[0];
+                break;
+        }
+        return selectedLevel;
+    }
+
+    public GameObject[] getObstaclesForLevel(int levelIndex) {
+        switch (levelIndex) {
+
+            case 0:
+                currentObs = level0DodgeObs;    //SET TO LEVEL 1
+                break;
+            default:
+                currentObs = level0DodgeObs;    //LEVEL 0 BY DEFAULT
+                break;
+        }
+        return currentObs;
     }
 
     public GameObject GetBossLevelSegment(int levelIndex)
     {
-        return bossLevelSegments[levelIndex];
+        GameObject selectedBossLevel;
+        switch (levelIndex)
+        {
+            case 0:
+                selectedBossLevel = bossLevelSegments[0];
+                break;
+            case 1:
+                selectedBossLevel = bossLevelSegments[1];
+                break;
+            default:
+                selectedBossLevel = bossLevelSegments[0];
+                break;
+        }
+        return selectedBossLevel;
     }
 
     public GameObject GetBoss(int levelIndex)
-    { 
-        return bosses[levelIndex];
+    {
+        GameObject boss = null;
+        switch (levelIndex)
+        {
+            case 0:
+                boss = bosses[0];   //BOSS 1
+                break;
+            default:
+                boss = bosses[0];   //DEMON BOY BY DEFAULT
+                break;
+        }
+        return boss;
     }
 }

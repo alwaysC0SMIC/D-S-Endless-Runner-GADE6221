@@ -11,7 +11,6 @@ public class PlayerDodgeMovement : MonoBehaviour
     private World world;
 
     public bool isPaused = false;
-    private bool hasStopped = false;
     private CameraShake shake;
     private LevelLoader lvlLoader;
 
@@ -22,7 +21,6 @@ public class PlayerDodgeMovement : MonoBehaviour
     //PLAYER SPEEDS
     private float moveSpeed = 30;
     private float horizontalMoveSpeed = 20;
-    private float deathSlowDown = 1F;
 
     //PLAYER SCORE
     public float playerScore = 0F;
@@ -30,6 +28,7 @@ public class PlayerDodgeMovement : MonoBehaviour
 
     //RIGIDBODY
     private Rigidbody rigid;
+    //private BoxCollider boxCollider;
 
     //PLAYER LOCK
     private bool playerUnlock = false;
@@ -59,6 +58,10 @@ public class PlayerDodgeMovement : MonoBehaviour
     public bool invincible = false;
     private float invincibleTimePeriod = 5F;
 
+    public float scoreMultiplier = 1F;
+    public bool scoreMultiply = false;
+    private float scoreMultTimePeriod = 10F;
+
     //MESH + MATERIAL VARIABLES
     [SerializeField] GameObject playerModel;
     public Material playerMaterial;
@@ -74,8 +77,8 @@ public class PlayerDodgeMovement : MonoBehaviour
         //UNLOCKS PLAYER MOVEMENT AFTER EXITING HOUSE
         Invoke("unlockPlayerMovement", 2);
         shake = GameObject.Find("ISO CAMERA").GetComponent<CameraShake>();
-        
-        lvlLoader = GameObject.Find("Transition").GetComponent<LevelLoader>();
+        //boxCollider = GetComponent<BoxCollider>();
+        lvlLoader = GameObject.Find("LevelLoader").GetComponent<LevelLoader>();
     }
 
     private void Start()
@@ -85,7 +88,7 @@ public class PlayerDodgeMovement : MonoBehaviour
 
     void Update()
     {
-        //Debug.Log(playerHP);
+        //Debug.Log(scoreMultiplier);
 
         //UPDATES CHARACTER'S MATERIAL
         playerModel.GetComponent<MeshRenderer>().material = currentMaterial;
@@ -205,18 +208,6 @@ public class PlayerDodgeMovement : MonoBehaviour
         //PLAYER HP CHECK
         if (playerHP <= 0) {
             PlayerDeath();
-            if (!hasStopped)
-            {
-                deathSlowDown -= Time.deltaTime * 2;
-                Time.timeScale = deathSlowDown;
-
-                if (deathSlowDown <= 0.005F)
-                {
-                    Time.timeScale = 0;
-                    hasStopped = true;
-
-                }
-            }
         }
 
     }
@@ -239,8 +230,8 @@ public class PlayerDodgeMovement : MonoBehaviour
         //INVINCIBILITY PICKUP
         if (other.gameObject.CompareTag("InvincibilityTrigger"))
         {
-            addPickUpScore();
-                activateInvincibility();
+            addScore(1);
+            activateInvincibility();
                 Invoke("deactivateInvincibility", invincibleTimePeriod);
             
             //StopCoroutine("InvincibilityTimer");
@@ -249,7 +240,7 @@ public class PlayerDodgeMovement : MonoBehaviour
         //STACKS INVINCIBILITY TIME SHOULD ANOTHER ONE BE ACTIVATED
         if (other.gameObject.CompareTag("InvincibilityTrigger") && invincible)
         {
-            addPickUpScore();
+            addScore(1);
             CancelInvoke("deactivateInvincibility");
             activateInvincibility();
             Invoke("deactivateInvincibility", invincibleTimePeriod);
@@ -258,33 +249,54 @@ public class PlayerDodgeMovement : MonoBehaviour
         //ACTIVATES WHEN ACTIVATING HEALTH PICKUP
         if (other.gameObject.CompareTag("HealthTrigger"))
         {
-            addPickUpScore();
+            addScore(1);
             if (playerHP < maxPlayerHP)
             {
                 healDamage();
                 CancelInvoke("healDamage");
             }
         }
+
+        //SCORE MULTIPLIER ACTIVATION
+        if (other.gameObject.CompareTag("scoreMultiplyTrigger"))
+        {
+            activateScoreMultiplier();
+            Invoke("deactivateScoreMultiplier", scoreMultTimePeriod);
+        }
+        //SCORE MULTIPLIER REACTIVATION IF MULTIPLE ARE PICKED UP
+        if (other.gameObject.CompareTag("scoreMultiplyTrigger") && scoreMultiply)
+        {
+            CancelInvoke("deactivateScoreMultiplier");
+            activateScoreMultiplier();
+            Invoke("deactivateScoreMultiplier", scoreMultTimePeriod);
+        }
+
     }
 
     private void unlockPlayerMovement() {
         playerUnlock = true;
     }
 
-    public void addObstacleScore() {
-        playerScore += 5;
-    }
-
-    public void addPickUpScore() {
-        playerScore += 10;
-    }
-
-    public void addEnemyScore() {
-        playerScore += 15;
-    }
-
-    public void addBossScore() {
-        playerScore += 100;
+    public void addScore(int index) {
+        switch (index)
+        {
+            //OBSTACLES
+            case 0:
+                playerScore += 5 * scoreMultiplier;
+                break;
+            //PICKUPS
+            case 1:
+                playerScore += 10 * scoreMultiplier;
+                break;
+            //ENEMIES
+            case 2:
+                playerScore += 15 * scoreMultiplier;
+                break;
+            //BOSSES
+            case 3:
+                playerScore += 100 * scoreMultiplier;
+                break;
+        }
     }
 
     public void damagePlayer() {
@@ -313,10 +325,22 @@ public class PlayerDodgeMovement : MonoBehaviour
         invincible = false;
     }
 
+    //SCORE MULTIPLIER ITEM
+    public void activateScoreMultiplier() {
+        scoreMultiply = true;
+        scoreMultiplier = 2F;
+    }
+
+    public void deactivateScoreMultiplier() {  
+        scoreMultiply = false;
+        scoreMultiplier = 1F;
+    }
+
     //STOPS TIME + MOVEMENT AND DISPLAYS DEATH SCREEN
     public void PlayerDeath() {
         isPaused = true;
-        Time.timeScale = 0;
+        
+        world.playerIsDead = true;
         deathScreenUI.SetActive(true);
     }
 
@@ -358,29 +382,6 @@ public class PlayerDodgeMovement : MonoBehaviour
     private void changeToStart() {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-
-    //COROUTINES [NO LONGER NEEDED]:
-    //public IEnumerator InvincibilityTimer()
-    //{
-    //    invincible = true;
-    //    playerModel.GetComponent<MeshRenderer>().material = invMaterial;
-
-    //    yield return new WaitForSeconds(invincibleTimePeriod);
-
-    //    invincible = false;
-    //    playerModel.GetComponent<MeshRenderer>().material = playerMaterial;
-    //}
-
-    //public IEnumerator HealthRegenerationTimer()
-    //{
-    //    invincible = true;
-    //    playerModel.GetComponent<MeshRenderer>().material = damageMaterial;
-
-    //    yield return new WaitForSeconds(healthRegenerationTimePeriod);
-
-    //    playerHP++;
-    //    playerModel.GetComponent<MeshRenderer>().material = playerMaterial;
-    //}
-}
+}//CLASS END
 
 

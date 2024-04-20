@@ -331,6 +331,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -6158218732215131492, guid: 961cf5d14e662514483c2bb2ea32f372,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 916.8
+      objectReference: {fileID: 0}
+    - target: {fileID: -6158218732215131492, guid: 961cf5d14e662514483c2bb2ea32f372,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 17.168
+      objectReference: {fileID: 0}
+    - target: {fileID: -6158218732215131492, guid: 961cf5d14e662514483c2bb2ea32f372,
+        type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.7071068
       objectReference: {fileID: 0}
@@ -444,6 +454,7 @@ PrefabInstance:
     - {fileID: -1139645910096311940, guid: 961cf5d14e662514483c2bb2ea32f372, type: 3}
     - {fileID: -9041267756353341082, guid: 961cf5d14e662514483c2bb2ea32f372, type: 3}
     - {fileID: 585220623989814957, guid: 961cf5d14e662514483c2bb2ea32f372, type: 3}
+    - {fileID: -2351650786362645294, guid: 961cf5d14e662514483c2bb2ea32f372, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 961cf5d14e662514483c2bb2ea32f372,
         type: 3}

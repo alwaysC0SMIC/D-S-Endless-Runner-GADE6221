@@ -55,12 +55,14 @@ public class DemonBoss : MonoBehaviour
         //IF BOSS IS NOT ALIVE
         else {
             world.bossFight = false;
-            world.currentLevelCounter = 0;
+            world.levelCounter = 0;
             world.bossSpawn = false;
 
             if (pdm != null) {
-                pdm.addBossScore();
+                pdm.addScore(3);
             }
+            world.currentLevel++;
+            world.levelGateSpawned = false;
 
             Destroy(this.gameObject);
         }

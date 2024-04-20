@@ -18,6 +18,7 @@ TagManager:
   - Parry
   - Enemy
   - HealthTrigger
+  - scoreMultiplyTrigger
   layers:
   - Default
   - TransparentFX

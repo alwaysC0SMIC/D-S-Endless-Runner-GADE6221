@@ -90,7 +90,7 @@ public class FloorEnemy : MonoBehaviour
 
             if (pdm != null)
             {
-                pdm.addEnemyScore();
+                pdm.addScore(2);
             }
             isAlive = false;
             shake.Shake();

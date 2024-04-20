@@ -33,7 +33,7 @@ public class EnvironmentMovement : MonoBehaviour
         {
             if (this.gameObject.CompareTag("LevelSegment"))
             {
-                world.currentLevelCounter++;
+                world.levelCounter++;
             }
             Destroy(this.gameObject);
         }

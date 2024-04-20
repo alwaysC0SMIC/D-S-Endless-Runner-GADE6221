@@ -6,8 +6,8 @@ using UnityEngine.SceneManagement;
 public class LevelLoader : MonoBehaviour
 {
     //VARIABLES
-    Animator top;
-    Animator bottom;
+    private Animator top;
+    private Animator bottom;
 
     //private static float animationTime = 1.167F;
 
@@ -18,8 +18,9 @@ public class LevelLoader : MonoBehaviour
 
     void Start()
     {
-        top = transform.GetChild(0).GetComponent<Animator>();
-        bottom = transform.GetChild(1).GetComponent<Animator>();
+        //TRANSITION ANIMATORS
+        top = transform.GetChild(0).GetChild(0).GetComponent<Animator>();
+        bottom = transform.GetChild(0).GetChild(1).GetComponent<Animator>();
     }
 
     void Update()

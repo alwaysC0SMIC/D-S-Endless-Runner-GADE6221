@@ -76,7 +76,12 @@ public class PlayerJump : MonoBehaviour
     }
 
     //UNLOCKS PLAYER MOVEMENT
-    private void unlockPlayerMovement()
+    public void unlockPlayerMovement()
+    {
+        playerUnlock = true;
+    }
+
+    public void lockPlayerMovement()
     {
         playerUnlock = true;
     }
