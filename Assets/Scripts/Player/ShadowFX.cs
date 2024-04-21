@@ -8,8 +8,7 @@ public class ShadowFX : MonoBehaviour
 
     void Start()
     {
-        player = GameObject.Find("PLAYER");   
-        
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     void Update()

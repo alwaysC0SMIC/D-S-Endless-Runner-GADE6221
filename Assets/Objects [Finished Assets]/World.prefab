@@ -395,7 +395,7 @@ GameObject:
   - component: {fileID: 5416499281979865207}
   m_Layer: 0
   m_Name: World
-  m_TagString: Untagged
+  m_TagString: World
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -435,11 +435,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameSpeed: 5
   currentLevel: 0
-  currentLevelCounter: 0
+  levelCounter: 0
   activeBossHP: 0
   numOfLevelsForBoss: 5
   bossFight: 0
   bossSpawn: 0
+  playerIsDead: 0
+  levelGateSpawned: 0
 --- !u!1 &9193166038739885705
 GameObject:
   m_ObjectHideFlags: 0

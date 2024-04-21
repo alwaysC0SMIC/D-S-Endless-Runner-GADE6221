@@ -12,7 +12,7 @@ public class EnvironmentMovement : MonoBehaviour
 
     void Awake()
     {
-        world = GameObject.Find("World").GetComponent<World>();
+        world = GameObject.FindGameObjectWithTag("World").GetComponent<World>();
     }
 
     void Update()

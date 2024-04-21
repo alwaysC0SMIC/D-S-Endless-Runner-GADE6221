@@ -35,7 +35,7 @@ public class PlayerJump : MonoBehaviour
         hitBox = GetComponent<BoxCollider>();
         animator = GetComponent<Animator>();
 
-        shake = GameObject.Find("ISO CAMERA").GetComponent<CameraShake>();
+        shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraShake>();
 
         //UNLOCKS PLAYER MOVEMENT AFTER EXITING HOUSE
         Invoke("unlockPlayerMovement", 2);
@@ -83,7 +83,7 @@ public class PlayerJump : MonoBehaviour
 
     public void lockPlayerMovement()
     {
-        playerUnlock = true;
+        playerUnlock = false;
     }
 
     //METHOD FOR JUMP ACTION

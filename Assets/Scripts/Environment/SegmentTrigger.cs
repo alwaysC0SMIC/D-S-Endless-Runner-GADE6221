@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -10,7 +11,9 @@ public class SegmentTrigger : MonoBehaviour
     World world;
 
     //LEVEL VARIABLES
-    private Vector3 levelSpawnPos = new Vector3(0, 0, 67.5F);   //private Vector3 levelSpawnPos = new Vector3(1.66893e-06F, -8.076429e-06F, 68.50555F);
+    //private Vector3 levelSpawnPos = new Vector3(0, 0, 68F);   //private Vector3 levelSpawnPos = new Vector3(1.66893e-06F, -8.076429e-06F, 68.50555F);
+    private Transform endOfCurrentLevel;
+
     private int levelIndex = 0;
     [SerializeField] GameObject[] levelSegments;
     [SerializeField] GameObject[] bossLevelSegments;
@@ -60,7 +63,7 @@ public class SegmentTrigger : MonoBehaviour
         currentObs = level0DodgeObs;    //Objects stay as array
         currentLevel = levelSegments[levelIndex];   //Levels will stay as single objects (unless you want variation)
 
-        world = GameObject.Find("World").GetComponent<World>();
+        world = GameObject.FindGameObjectWithTag("World").GetComponent<World>();
     }
 
     void Update()
@@ -72,13 +75,15 @@ public class SegmentTrigger : MonoBehaviour
             //Debug.Log(bossMode);
         }
 
+        //GETS LEVEL TAIL TO SPAWN IN NEXT LEVEL
+        endOfCurrentLevel = GameObject.FindGameObjectWithTag("LevelTail").transform;
+
         //RESETS LEVEL ARRAY IF YOU REACH THE END OF IT
         if (world.currentLevel == levelSegments.Length)
         {
             Debug.Log("You reached the end of levels, restarting cycle");
             world.currentLevel = 0;
         }
-        
 
         if (distCounter != null) {
             totalDistance = Mathf.RoundToInt(distCounter.distance);
@@ -98,7 +103,10 @@ public class SegmentTrigger : MonoBehaviour
             if (!bossMode)
             {
                 //NORMAL LEVEL GENERATION
-                Instantiate(GetLevelSegment(levelIndex), levelSpawnPos, Quaternion.Euler(0, 180, 0));
+                
+
+                Instantiate(GetLevelSegment(levelIndex), new Vector3(endOfCurrentLevel.position.x, endOfCurrentLevel.position.y, endOfCurrentLevel.position.z + 34/2), Quaternion.Euler(0, 180, 0));
+                Destroy(endOfCurrentLevel.gameObject);
 
                 //NORMAL OBSTACLE GENERATION
                 generateRows(rowFilled);
@@ -114,7 +122,9 @@ public class SegmentTrigger : MonoBehaviour
             else 
             {
                 //LEVEL/OBSTACLE GENERATION IF THERE'S A BOSS FIGHT
-                Instantiate(GetBossLevelSegment(levelIndex), levelSpawnPos, Quaternion.Euler(0, 180, 0));
+                Instantiate(GetBossLevelSegment(levelIndex), new Vector3(endOfCurrentLevel.position.x, endOfCurrentLevel.position.y, endOfCurrentLevel.position.z + 34/2), Quaternion.Euler(0, 180, 0));
+                Destroy(endOfCurrentLevel.gameObject);
+
                 addPickUps(pickupItem, true);
                 resetRows();
 
@@ -138,12 +148,12 @@ public class SegmentTrigger : MonoBehaviour
     //FILLS THE ROW BOOLEAN WITH CHOSEN OBSTACLE ROWS
     public void generateRows(bool[] rowFilled) {
         //OBSTACLE GENERATION
-        int i = 2;
+        int i = 2;  
 
         while (i < 34)
         {
             rowFilled[i] = true;
-            int randomNumber = UnityEngine.Random.Range(4, 8);
+            int randomNumber = UnityEngine.Random.Range(5, 8);  //ORIGINAL RANGE: 4, 8
 
             i += randomNumber;
             //Debug.Log(i);  
@@ -153,7 +163,7 @@ public class SegmentTrigger : MonoBehaviour
 
     //INSTANTIATES OBSTACLES IN CHOSEN ROWSs
     public void fillRows(GameObject[] obstacle, float[] zPosition) {
-        int i = 0;
+        int i = 2; //(Initial offset)
         int randomNumber = UnityEngine.Random.Range(0, obstacle.Length);
         while (i < 34)
         {
@@ -212,7 +222,7 @@ public class SegmentTrigger : MonoBehaviour
     public void levelGateSpawn() {
         if (!world.levelGateSpawned) {
             //GENERATE LEVEL GATE PREFAB
-            Instantiate(levelGates[0], new Vector3(0F, 0F, 54F), Quaternion.Euler(0, 0, 0));
+            Instantiate(levelGates[0], new Vector3(0F, 0F, 55F), Quaternion.Euler(0, 0, 0));
             world.levelGateSpawned = true;
         }
     }

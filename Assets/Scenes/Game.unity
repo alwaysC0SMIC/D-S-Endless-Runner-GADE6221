@@ -49014,21 +49014,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1532506550331904944, guid: ded340e9adfc05d4b93726fc618f720a,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2437796817237133741, guid: ded340e9adfc05d4b93726fc618f720a,
         type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 1863885728908374998}
-    - target: {fileID: 2695785447406216254, guid: ded340e9adfc05d4b93726fc618f720a,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7119355379080040717, guid: ded340e9adfc05d4b93726fc618f720a,
         type: 3}
       propertyPath: m_Name
@@ -49231,6 +49221,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7907641908403144176, guid: d2b96e2ed3cb71546abe74994b4ef61a,
+        type: 3}
+      propertyPath: m_TagString
+      value: MainCamera
       objectReference: {fileID: 0}
     - target: {fileID: 8465502522470218735, guid: d2b96e2ed3cb71546abe74994b4ef61a,
         type: 3}

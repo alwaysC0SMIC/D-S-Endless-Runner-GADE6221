@@ -25,7 +25,7 @@ public class MainMenu : MonoBehaviour
         gameObject.transform.GetChild(2).gameObject.SetActive(false);
         gameObject.transform.GetChild(3).gameObject.SetActive(false);
 
-        lvlLoader = GameObject.Find("LevelLoader").GetComponent<LevelLoader>();
+        lvlLoader = GameObject.FindGameObjectWithTag("LevelLoader").GetComponent<LevelLoader>();
     }
 
     //MENU BUTTON FUNCTIONS

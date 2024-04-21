@@ -16,9 +16,9 @@ public class StompFX : MonoBehaviour
 
     void Awake()
     {
-        world = GameObject.Find("World").GetComponent<World>();
+        world = GameObject.FindGameObjectWithTag("World").GetComponent<World>();
         particles = GetComponent<ParticleSystem>();
-        player = GameObject.Find("PLAYER");
+        player = GameObject.FindGameObjectWithTag("Player");
         playerRB = player.GetComponent<Rigidbody>();
         particles.Stop();
     }

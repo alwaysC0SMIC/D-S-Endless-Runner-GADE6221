@@ -77,15 +77,14 @@ public class PlayerDodgeMovement : MonoBehaviour
         currentMaterial = playerMaterial;
         //UNLOCKS PLAYER MOVEMENT AFTER EXITING HOUSE
         Invoke("unlockPlayerMovement", 2);
-        shake = GameObject.Find("ISO CAMERA").GetComponent<CameraShake>();
-        //boxCollider = GetComponent<BoxCollider>();
-        lvlLoader = GameObject.Find("LevelLoader").GetComponent<LevelLoader>();
-        audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
+        shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraShake>();
+        lvlLoader = GameObject.FindGameObjectWithTag("LevelLoader").GetComponent<LevelLoader>();
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();   
     }
 
     private void Start()
     {
-        world = GameObject.Find("World").GetComponent<World>();
+        world = GameObject.FindGameObjectWithTag("World").GetComponent<World>();
         audioManager.playDoorSFX();
     }
 
@@ -273,11 +272,16 @@ public class PlayerDodgeMovement : MonoBehaviour
             activateScoreMultiplier();
             Invoke("deactivateScoreMultiplier", scoreMultTimePeriod);
         }
-
     }
 
     private void unlockPlayerMovement() {
         playerUnlock = true;
+        GetComponent<PlayerJump>().unlockPlayerMovement();
+    }
+
+    public void lockPlayerMovement() {
+        playerUnlock = false;
+        GetComponent<PlayerJump>().lockPlayerMovement();
     }
 
     public void addScore(int index) {
@@ -339,10 +343,10 @@ public class PlayerDodgeMovement : MonoBehaviour
         scoreMultiplier = 1F;
     }
 
-    //STOPS TIME + MOVEMENT AND DISPLAYS DEATH SCREEN
+    //LOCKS MOVEMENT + DISPLAYS DEATH SCREEN
     public void PlayerDeath() {
         isPaused = true;
-        
+        lockPlayerMovement();
         world.playerIsDead = true;
         deathScreenUI.SetActive(true);
     }

@@ -21,7 +21,7 @@ public class xAxisProjectile : MonoBehaviour
     void Awake()
     {
         boss = GameObject.FindGameObjectsWithTag("Boss");
-        shake = GameObject.Find("ISO CAMERA").GetComponent<CameraShake>();
+        shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraShake>();
     }
 
     void Update()

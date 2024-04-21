@@ -35,10 +35,10 @@ public class DemonBoss : MonoBehaviour
     {
         ResetBossHP();
         animator = GetComponent<Animator>();
-        world = GameObject.Find("World").GetComponent<World>();
-        target = GameObject.Find("PLAYER").transform;
-        pdm = GameObject.Find("PLAYER").GetComponent<PlayerDodgeMovement>();
-        shake = GameObject.Find("ISO CAMERA").GetComponent<CameraShake>();
+        world = GameObject.FindGameObjectWithTag("World").GetComponent<World>();
+        target = GameObject.FindGameObjectWithTag("Player").transform;
+        pdm = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerDodgeMovement>();
+        shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraShake>();
     }
 
     void Update()
