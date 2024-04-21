@@ -13,6 +13,7 @@ public class PlayerDodgeMovement : MonoBehaviour
     public bool isPaused = false;
     private CameraShake shake;
     private LevelLoader lvlLoader;
+    private AudioManager audioManager;
 
     //UI OBJECTS
     [SerializeField] private GameObject deathScreenUI;
@@ -79,11 +80,13 @@ public class PlayerDodgeMovement : MonoBehaviour
         shake = GameObject.Find("ISO CAMERA").GetComponent<CameraShake>();
         //boxCollider = GetComponent<BoxCollider>();
         lvlLoader = GameObject.Find("LevelLoader").GetComponent<LevelLoader>();
+        audioManager = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
     }
 
     private void Start()
     {
         world = GameObject.Find("World").GetComponent<World>();
+        audioManager.playDoorSFX();
     }
 
     void Update()
