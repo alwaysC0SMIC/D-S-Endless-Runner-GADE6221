@@ -66,19 +66,19 @@ public class FloorEnemy : MonoBehaviour
         }
         else {
             //TIME RAMP
-            if (!pdm.isPaused && !endAttack) {
+            //if (!pdm.isPaused && !endAttack) {
                
-                    timeRamp -= Time.deltaTime;
+            //        timeRamp -= Time.deltaTime;
 
-                    Time.timeScale = timeRamp;
-                    if (timeRamp <= 0.3F)
-                    {
-                        timeRamp = 1F;
-                        Time.timeScale = 1F;
-                        endAttack = true;
-                    }
+            //        Time.timeScale = timeRamp;
+            //        if (timeRamp <= 0.3F)
+            //        {
+            //            timeRamp = 1F;
+            //            Time.timeScale = 1F;
+            //            endAttack = true;
+            //        }
                 
-            }
+            //}
         }
     }
 
@@ -93,7 +93,7 @@ public class FloorEnemy : MonoBehaviour
                 pdm.addScore(2);
             }
             isAlive = false;
-            shake.Shake();
+            //shake.Shake();
             //DISABLES MESH AND COLLIDER AND STARTS TIMER FOR DESPAWN WHILE PLAYING BLOOD SPLATTER
             gameObject.transform.GetChild(0).gameObject.SetActive(false);
             gameObject.GetComponent<Collider>().enabled = false;

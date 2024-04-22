@@ -101,11 +101,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelSegments:
-  - {fileID: 6719636963574913501, guid: 04a51608f8adf3f44ae85ecada0851ea, type: 3}
-  - {fileID: 4949314811734428808, guid: 40d364608b107294e80e8da6e125b8bf, type: 3}
+  - {fileID: 4534144621119119573, guid: 65eaf8cc10f3fdd49bcc6a3b48b46385, type: 3}
+  - {fileID: 4751133395220352864, guid: 1126f108e6fc79d478abd730bb1809b8, type: 3}
   bossLevelSegments:
-  - {fileID: 3407803971285434371, guid: 1a4d4f3569ce6f24389812c92bf9a5c1, type: 3}
-  - {fileID: 4949314811734428808, guid: 40d364608b107294e80e8da6e125b8bf, type: 3}
+  - {fileID: 358931814154555186, guid: d601cee51ea8dd94bba2408112d5da26, type: 3}
+  - {fileID: 4751133395220352864, guid: 1126f108e6fc79d478abd730bb1809b8, type: 3}
   levelGates:
   - {fileID: 3864848694613899666, guid: 6c910ac30f6f4a6478df73e9846439d9, type: 3}
   level0DodgeObs:

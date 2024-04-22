@@ -11,7 +11,6 @@ public class SegmentTrigger : MonoBehaviour
     World world;
 
     //LEVEL VARIABLES
-    //private Vector3 levelSpawnPos = new Vector3(0, 0, 68F);   //private Vector3 levelSpawnPos = new Vector3(1.66893e-06F, -8.076429e-06F, 68.50555F);
     private Transform endOfCurrentLevel;
 
     private int levelIndex = 0;
@@ -19,6 +18,7 @@ public class SegmentTrigger : MonoBehaviour
     [SerializeField] GameObject[] bossLevelSegments;
     [SerializeField] GameObject[] levelGates;
     private GameObject currentLevel;
+    private bool levelHasSpawned = false;
 
     //OBSTACLES VARIABLES
     private GameObject[] currentObs;
@@ -48,10 +48,10 @@ public class SegmentTrigger : MonoBehaviour
     void Start()
     {
         int i = 0;
-        float startingVal = 50F;  //46.34225F;
+        float startingVal = 30F;  //46.34225F;  was 50
         float rowDistance = 2F;
 
-        while (i < 34)
+        while (i < 30)
         {   
             zPosition[i] = startingVal;
             startingVal += rowDistance;
@@ -77,6 +77,7 @@ public class SegmentTrigger : MonoBehaviour
 
         //GETS LEVEL TAIL TO SPAWN IN NEXT LEVEL
         endOfCurrentLevel = GameObject.FindGameObjectWithTag("LevelTail").transform;
+        //Debug.Log(endOfCurrentLevel.position.z);
 
         //RESETS LEVEL ARRAY IF YOU REACH THE END OF IT
         if (world.currentLevel == levelSegments.Length)
@@ -94,18 +95,18 @@ public class SegmentTrigger : MonoBehaviour
     //INSTANTIATES NEW LEVEL SEGMENTS
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("BuilderTrigger"))
+        if (other.gameObject.CompareTag("BuilderTrigger") && !levelHasSpawned)
         {
             //Use this to figure out spacing between levels
             //Time.timeScale = 0;
+
+            Debug.Log("Spawning in level");
 
             //LEVEL + OBSTACLE GENERATION
             if (!bossMode)
             {
                 //NORMAL LEVEL GENERATION
-                
-
-                Instantiate(GetLevelSegment(levelIndex), new Vector3(endOfCurrentLevel.position.x, endOfCurrentLevel.position.y, endOfCurrentLevel.position.z + 34/2), Quaternion.Euler(0, 180, 0));
+                Instantiate(GetLevelSegment(levelIndex), new Vector3(endOfCurrentLevel.position.x, endOfCurrentLevel.position.y, endOfCurrentLevel.position.z+30), Quaternion.Euler(0, 0, 0));
                 Destroy(endOfCurrentLevel.gameObject);
 
                 //NORMAL OBSTACLE GENERATION
@@ -122,7 +123,7 @@ public class SegmentTrigger : MonoBehaviour
             else 
             {
                 //LEVEL/OBSTACLE GENERATION IF THERE'S A BOSS FIGHT
-                Instantiate(GetBossLevelSegment(levelIndex), new Vector3(endOfCurrentLevel.position.x, endOfCurrentLevel.position.y, endOfCurrentLevel.position.z + 34/2), Quaternion.Euler(0, 180, 0));
+                Instantiate(GetBossLevelSegment(levelIndex), new Vector3(endOfCurrentLevel.position.x, endOfCurrentLevel.position.y, endOfCurrentLevel.position.z+30), Quaternion.Euler(0, 0, 0));
                 Destroy(endOfCurrentLevel.gameObject);
 
                 addPickUps(pickupItem, true);
@@ -131,10 +132,13 @@ public class SegmentTrigger : MonoBehaviour
                 //SPAWNS IN BOSS
                 if (!world.bossSpawn)
                 {
-                    Instantiate(bossSpawner, new Vector3(1.66893e-06F, -8.076429e-06F, 52F), Quaternion.Euler(0, 0, 0));
+                    Instantiate(bossSpawner, new Vector3(0F, 0F, 32F), Quaternion.Euler(0, 0, 0));
                     world.bossSpawn = true;
                 }    
             }
+            
+            levelHasSpawned = true;
+            Invoke("resetSpawnBuffer", 1.5F);
         }
         //TRIGGERS BOSS TO APPEAR AND DESTROYS TRIGGER
         if (other.gameObject.CompareTag("BossTrigger")) 
@@ -150,7 +154,7 @@ public class SegmentTrigger : MonoBehaviour
         //OBSTACLE GENERATION
         int i = 2;  
 
-        while (i < 34)
+        while (i < 30)
         {
             rowFilled[i] = true;
             int randomNumber = UnityEngine.Random.Range(5, 8);  //ORIGINAL RANGE: 4, 8
@@ -165,7 +169,7 @@ public class SegmentTrigger : MonoBehaviour
     public void fillRows(GameObject[] obstacle, float[] zPosition) {
         int i = 2; //(Initial offset)
         int randomNumber = UnityEngine.Random.Range(0, obstacle.Length);
-        while (i < 34)
+        while (i < 30)
         {
             if (rowFilled[i])
             {
@@ -190,7 +194,7 @@ public class SegmentTrigger : MonoBehaviour
         int distanceBetween = UnityEngine.Random.Range(minDistance, maxDistance);
         int position = UnityEngine.Random.Range(-1, 2) * 2;
 
-        while (i < 33)
+        while (i < 29)
         {
             if (!rowFilled[i] && !rowFilled[i+1] && !rowFilled[i - 1]) {
                 int itemIndex = UnityEngine.Random.Range(0, pickupItem.Length);
@@ -208,7 +212,7 @@ public class SegmentTrigger : MonoBehaviour
     public void addEnemies(GameObject[] enemies, float[] zPosition)
     {
         int i = 1;
-        while (i < 32)
+        while (i < 30)
         {
             if (!rowFilled[i] && !rowFilled[i + 1] && !rowFilled[i - 1] && !rowFilled[i + 2] && !rowFilled[i - 2])
             {
@@ -222,7 +226,7 @@ public class SegmentTrigger : MonoBehaviour
     public void levelGateSpawn() {
         if (!world.levelGateSpawned) {
             //GENERATE LEVEL GATE PREFAB
-            Instantiate(levelGates[0], new Vector3(0F, 0F, 55F), Quaternion.Euler(0, 0, 0));
+            Instantiate(levelGates[0], new Vector3(0F, 0F, 34F), Quaternion.Euler(0, 0, 0));
             world.levelGateSpawned = true;
         }
     }
@@ -230,11 +234,15 @@ public class SegmentTrigger : MonoBehaviour
     //RESETS THE ROWS FOR THE NEXT INSTANTIATION
     public void resetRows() {
         int i = 0;
-        while (i < 34)
+        while (i < 30)
         {
             rowFilled[i] = false;
             i++;
         }
+    }
+
+    private void resetSpawnBuffer() {
+        levelHasSpawned = false;
     }
 
     //METHODS TO GET LEVEL INDEX FROM ARRAYS
