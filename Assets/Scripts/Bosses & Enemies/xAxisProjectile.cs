@@ -76,6 +76,7 @@ public class xAxisProjectile : MonoBehaviour
         if (other.gameObject.CompareTag("Player") && this.gameObject.CompareTag("Parry"))
         {
             deflected = true;
+            other.gameObject.GetComponent<PlayerJump>().attackEnemy();
         }
     }
 }

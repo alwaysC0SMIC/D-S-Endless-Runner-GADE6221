@@ -12,7 +12,12 @@ public class PlayerJump : MonoBehaviour
     //private static float jumpSpeed = 10F;
     private static float stompSpeed = -65F;
 
+    private bool isSlide = false;
+    private static float slideTimePeriod = 1F;
+    private float slideTimeCounter;
+
     public bool stomp = false;
+    public bool animStomp = false;
     private CameraShake shake;
 
     //PLAYER LOCK
@@ -26,16 +31,21 @@ public class PlayerJump : MonoBehaviour
     float jumpBufferCounter;
 
     //ANIMATION
+    private World world;
     Animator animator;
+    private PlayerDodgeMovement pdm;
+    private bool attackAnim = false;
 
     void Start()
     {
         //groundSlam.Stop();
         rigid = GetComponent<Rigidbody>();
         hitBox = GetComponent<BoxCollider>();
-        animator = GetComponent<Animator>();
-
+        animator = GetComponentInChildren<Animator>();
+        pdm = GetComponent<PlayerDodgeMovement>();
         shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraShake>();
+
+        world = GameObject.FindGameObjectWithTag("World").GetComponent<World>();
 
         //UNLOCKS PLAYER MOVEMENT AFTER EXITING HOUSE
         Invoke("unlockPlayerMovement", 2);
@@ -43,6 +53,24 @@ public class PlayerJump : MonoBehaviour
 
     void Update()
     {
+        //Debug.Log(isSlide + "   " + slideTimeCounter);
+
+        //CHARACTER ANIMATIONS
+        if (world.playerIsDead)
+        {
+            animator.SetTrigger("death");
+        }
+        animator.SetBool("attack", attackAnim);
+        animator.SetBool("stomp", animStomp);
+        animator.SetFloat("vertical", transform.position.y);
+        animator.SetFloat("horizontal", pdm.direction);
+
+
+        //Debug.Log(pdm.direction);
+
+        //animator.SetBool("stomp", stomp);
+        //Debug.Log(IsGrounded());
+
         //JUMP BUFFER COUNTER
         jumpBufferCounter -= Time.deltaTime;
 
@@ -64,14 +92,37 @@ public class PlayerJump : MonoBehaviour
         }
 
         //SLIDE INPUT
-        else if ((Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftControl)) && IsGrounded())
+        else if ((Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.LeftControl)) && IsGrounded() && !isSlide)
         {
-            //ENTER SLIDE HEIGHT
+                Slide();
+        }
+
+            //CANCELS SLIDING IF PLAYER JUMPS DURING TIME
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space) && isSlide)
+            {
+                isSlide = false;
+            }    
+        }
+
+        //SLIDE HITBOX CHANGES
+        if (isSlide)
+        {
             hitBox.size = new Vector3(0.025F, 0.015F, 0.025F);
-        } else if ((Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.LeftControl)) && IsGrounded()) {
-            //COME UP FROM SLIDE TO NORMAL
+        }
+        else {
             hitBox.size = new Vector3(0.025F, 0.025F, 0.025F);
         }
+
+        //SLIDE TIMER
+        if (isSlide) {
+            if (slideTimeCounter > 0)
+            {
+                slideTimeCounter -= Time.deltaTime;
+            }
+            else {
+                slideTimeCounter = 0;
+                isSlide = false;
+            }
         }
     }
 
@@ -91,7 +142,7 @@ public class PlayerJump : MonoBehaviour
         if (!IsGrounded())
         {
             return;
-        }   
+        }
         rigid.velocity = new Vector3(rigid.position.x, jumpHeight, rigid.position.z);
         jumpBufferCounter = 0;
     }
@@ -103,19 +154,41 @@ public class PlayerJump : MonoBehaviour
         rigid.velocity = new Vector3(rigid.position.x, stompSpeed, rigid.position.z);
 
         stomp = true;
-
+        animStomp = true;
+        Invoke("resetStompAnim", 0.12F);
         //SHAKE FX
         //shake.Shake(); 
+    }
+
+    private void Slide() {
+        isSlide = true;
+        slideTimeCounter = slideTimePeriod;
+    }
+
+    private void slideReset() {
+        isSlide = false;  
     }
 
     //private void StompFX() {
     //    groundSlam.Play();
     //}
 
+    public void attackEnemy() {
+        attackAnim = true;
+        Invoke("enemyAttackAnimEnd", 0.01F);
+    }
+
+    private void enemyAttackAnimEnd() {
+        attackAnim = false;
+    }
+
+    private void resetStompAnim() {
+        animStomp = false;
+    }
+
     private bool IsGrounded() {
         //return Mathf.Approximately(rigid.velocity.y, 0F);
         //Debug.Log(rigid.position.y);
         return rigid.position.y <= 1.127501;
     }
-
 }

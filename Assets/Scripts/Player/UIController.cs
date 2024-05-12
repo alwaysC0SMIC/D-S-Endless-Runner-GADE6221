@@ -9,7 +9,7 @@ public class DistanceCounter : MonoBehaviour
     //DISTANCE VARIABLES
     public bool addingDis = false;
     public float gameSpeed = 5F;    //DEFAULT IS 5
-    public GameObject distanceDisplay, itemDisplay, itemBox, scoreDisplay1, scoreDisplay2;
+    public GameObject distanceDisplay, itemDisplay, itemBox, scoreDisplay1, scoreDisplay2, multiplyDisplay;
     public float distance = 0;
 
     private PlayerDodgeMovement pdm;
@@ -50,6 +50,15 @@ public class DistanceCounter : MonoBehaviour
             {
                 itemDisplay.GetComponent<Text>().text = "";
                 itemBox.GetComponent<RawImage>().color = new Color(0, 0, 0, 0);
+            }
+
+            //SCORE MULTIPLIER UI
+            if (pdm.scoreMultiply)
+            {
+                multiplyDisplay.SetActive(true);
+            }
+            else {
+                multiplyDisplay.SetActive(false);
             }
         }
     }

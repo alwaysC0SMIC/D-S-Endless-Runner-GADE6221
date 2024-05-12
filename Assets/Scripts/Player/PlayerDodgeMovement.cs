@@ -30,6 +30,7 @@ public class PlayerDodgeMovement : MonoBehaviour
     //RIGIDBODY
     private Rigidbody rigid;
     //private BoxCollider boxCollider;
+    public float direction = 0;
 
     //PLAYER LOCK
     private bool playerUnlock = false;
@@ -64,7 +65,8 @@ public class PlayerDodgeMovement : MonoBehaviour
     private float scoreMultTimePeriod = 10F;
 
     //MESH + MATERIAL VARIABLES
-    [SerializeField] GameObject playerModel;
+    //[SerializeField] GameObject playerModel;
+    private SpriteRenderer playerModel;
     public Material playerMaterial;
     public Material invMaterial;
     public Material damageMaterial;
@@ -74,7 +76,10 @@ public class PlayerDodgeMovement : MonoBehaviour
     {
         rigid = GetComponent<Rigidbody>();
         playerScore = 0;
-        currentMaterial = playerMaterial;
+
+        playerModel = GetComponentInChildren<SpriteRenderer>();
+        //currentMaterial = playerMaterial;
+
         //UNLOCKS PLAYER MOVEMENT AFTER EXITING HOUSE
         Invoke("unlockPlayerMovement", 2);
         shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraShake>();
@@ -93,19 +98,22 @@ public class PlayerDodgeMovement : MonoBehaviour
         //Debug.Log(scoreMultiplier);
 
         //UPDATES CHARACTER'S MATERIAL
-        playerModel.GetComponent<MeshRenderer>().material = currentMaterial;
+        //playerModel.GetComponent<MeshRenderer>().material = currentMaterial;
 
         if (invincible)
         {
-            currentMaterial = invMaterial;
+            //currentMaterial = invMaterial;
+            playerModel.color = Color.green;
         }
         else if (damage)
         {
-            currentMaterial = damageMaterial;
+            playerModel.color = Color.red;
+            //currentMaterial = damageMaterial;
         }
         else if (!damage && !invincible)
         {
-            currentMaterial = playerMaterial;
+            //currentMaterial = playerMaterial;
+            playerModel.color = Color.white;
         }
 
         //MOVING FORWARD
@@ -125,7 +133,6 @@ public class PlayerDodgeMovement : MonoBehaviour
         if ((Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) && lane2 && lane1 == false)
         {
             movingL1 = true;
-            
             movingL2 = false;
             movingL3 = false;
 
@@ -133,6 +140,7 @@ public class PlayerDodgeMovement : MonoBehaviour
             lane1 = true;
             lane3 = false;
             laneNum = 1;
+            direction = -1;
         }
         //RIGHT TO MIDDLE
         else if ((Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) && lane3 && lane2 == false)
@@ -146,6 +154,7 @@ public class PlayerDodgeMovement : MonoBehaviour
             lane2 = true;
             lane3 = false;
             laneNum = 2;
+                direction = -1;
             }
 
         //===RIGHT SIDE===
@@ -161,6 +170,7 @@ public class PlayerDodgeMovement : MonoBehaviour
             lane2 = false;
             lane3 = true;
             laneNum = 3;
+                direction = 1;
             }
         //LEFT TO MIDDLE
         else if ((Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) && lane1 && lane2 == false)
@@ -174,37 +184,47 @@ public class PlayerDodgeMovement : MonoBehaviour
             lane1 = false;
             lane3 = false;
             laneNum = 2;
+                direction = 1;
             }
 
         //===ACTIONS===
         if (movingL1)
         {
-            transform.position = Vector3.MoveTowards(transform.position, lane1Pos, horizontalMoveSpeed * Time.deltaTime);
-            if (transform.position == lane1Pos)
+                transform.position = Vector3.MoveTowards(transform.position, lane1Pos, horizontalMoveSpeed * Time.deltaTime);
+
+                if (transform.position == lane1Pos)
             {
                 movingL1 = false;
-            }
+                    direction = 0;
+                }
         }
         else if (movingL2)
         {
-            transform.position = Vector3.MoveTowards(transform.position, lane2Pos, horizontalMoveSpeed * Time.deltaTime);
-            if (transform.position == lane2Pos)
-            {
+                transform.position = Vector3.MoveTowards(transform.position, lane2Pos, horizontalMoveSpeed * Time.deltaTime);
+
+                if (transform.position == lane2Pos)
+                {
                 movingL2 = false;
-            }
+                    direction = 0;
+                }
         }
         else if (movingL3)
         {
-            transform.position = Vector3.MoveTowards(transform.position, lane3Pos, horizontalMoveSpeed * Time.deltaTime);
-            if (transform.position == lane3Pos)
+                transform.position = Vector3.MoveTowards(transform.position, lane3Pos, horizontalMoveSpeed * Time.deltaTime);
+
+                if (transform.position == lane3Pos)
             {
                 movingL3 = false;
-            }
+                    direction = 0;
+                }
         }
         }
         //FOR PAUSING GAME
-        if (Input.GetKeyDown(KeyCode.Escape)) {
+        if (Input.GetKeyDown(KeyCode.Escape) && !isPaused) {
             GamePause();
+        } else if ((Input.GetKeyDown(KeyCode.Escape) && isPaused))
+        {
+            GameResume();
         }
 
         //PLAYER HP CHECK
@@ -389,6 +409,13 @@ public class PlayerDodgeMovement : MonoBehaviour
     private void changeToStart() {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+    //ANIMATION
+    private void dodgeLeft()
+    {
+        direction = -1;
+    }
+
 }//CLASS END
 
 

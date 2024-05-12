@@ -23,6 +23,8 @@ public class SegmentTrigger : MonoBehaviour
     //OBSTACLES VARIABLES
     private GameObject[] currentObs;
     public GameObject[] level0DodgeObs;
+    public GameObject[] grassDodgeObs;
+
     private bool[] rowFilled = new bool[34];
     private float[] zPosition = new float[34];
 
@@ -100,7 +102,7 @@ public class SegmentTrigger : MonoBehaviour
             //Use this to figure out spacing between levels
             //Time.timeScale = 0;
 
-            Debug.Log("Spawning in level");
+            //Debug.Log("Spawning in level");
 
             //LEVEL + OBSTACLE GENERATION
             if (!bossMode)
@@ -138,12 +140,12 @@ public class SegmentTrigger : MonoBehaviour
             }
             
             levelHasSpawned = true;
-            Invoke("resetSpawnBuffer", 1.5F);
+            Invoke("resetSpawnBuffer", 0.1F);
         }
         //TRIGGERS BOSS TO APPEAR AND DESTROYS TRIGGER
         if (other.gameObject.CompareTag("BossTrigger")) 
         {
-            Instantiate(GetBoss(levelIndex), new Vector3(-10, 0, 10), Quaternion.Euler(0, 90, 0));
+            Instantiate(GetBoss(levelIndex), new Vector3(-10, 4, 10), Quaternion.Euler(0, 90+45, 0));
             bossUI.SetActive(true);
             Destroy(other.gameObject);
         }
@@ -173,7 +175,7 @@ public class SegmentTrigger : MonoBehaviour
         {
             if (rowFilled[i])
             {
-                Instantiate(obstacle[randomNumber], new Vector3(0F, 1.5F, zPosition[i]), Quaternion.Euler(90, 0, 0));
+                Instantiate(obstacle[randomNumber], new Vector3(0F, 0.5F, zPosition[i]), Quaternion.Euler(0, 0, 0));
             }
             i++;
             randomNumber = UnityEngine.Random.Range(0, obstacle.Length);
@@ -198,7 +200,7 @@ public class SegmentTrigger : MonoBehaviour
         {
             if (!rowFilled[i] && !rowFilled[i+1] && !rowFilled[i - 1]) {
                 int itemIndex = UnityEngine.Random.Range(0, pickupItem.Length);
-                Instantiate(pickUp[itemIndex], new Vector3(position, 1.5F, zPosition[i]), Quaternion.Euler(90, 0, 0));
+                Instantiate(pickUp[itemIndex], new Vector3(position, 1F, zPosition[i]), Quaternion.Euler(0, 0, 0));
                 //rowFilled[i] = true;
             }
             
@@ -268,10 +270,10 @@ public class SegmentTrigger : MonoBehaviour
         switch (levelIndex) {
 
             case 0:
-                currentObs = level0DodgeObs;    //SET TO LEVEL 1
+                currentObs = grassDodgeObs;    //SET TO 1 (GRASS LEVEL)
                 break;
             default:
-                currentObs = level0DodgeObs;    //LEVEL 0 BY DEFAULT
+                currentObs = grassDodgeObs;    //LEVEL 1 OBSTACLES BY DEFAULT
                 break;
         }
         return currentObs;

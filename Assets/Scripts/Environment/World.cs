@@ -5,7 +5,7 @@ using UnityEngine;
 public class World : MonoBehaviour
 {
     //GAME SPEED VARIABLES
-    public float gameSpeed = 5F;
+    public float gameSpeed = 6F;
     private float speedChangeTime = 5F;
     private float maxGameSpeed = 13F;
     private bool gameSpeedTimeractive = false;
@@ -53,17 +53,18 @@ public class World : MonoBehaviour
 
             //DEACCELERATION FOR WHEN PLAYER DIES
             if (playerIsDead && gameSpeed > 0) {
-                gameSpeed -= Time.deltaTime * 3;
+            //gameSpeed -= Time.deltaTime * 3;
+            gameSpeed = 0;
             }
-            if (playerIsDead && gameSpeed < 0)
-            {
-                gameSpeed = 0;
-            }
+            //if (playerIsDead && gameSpeed < 0)
+            //{
+            //    gameSpeed = 0;
+            //}
     }
 
     public void introAcceleration()
     {
-        if (gameSpeed < 5 && !playerIsDead)
+        if (gameSpeed < 6 && !playerIsDead)
         {
             gameSpeed += 2F * Time.deltaTime;
         }

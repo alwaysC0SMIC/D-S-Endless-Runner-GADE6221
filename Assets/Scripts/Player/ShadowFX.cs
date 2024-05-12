@@ -13,9 +13,7 @@ public class ShadowFX : MonoBehaviour
 
     void Update()
     {
-        transform.localScale = new Vector3(Vector3.Distance(gameObject.transform.GetChild(0).position, player.transform.position)/3, Vector3.Distance(gameObject.transform.GetChild(0).position, player.transform.position) / 3, 1F);
+        transform.localScale = new Vector3(Vector3.Distance(gameObject.transform.GetChild(0).position, player.transform.position) / 3 - 0.16744518F, Vector3.Distance(gameObject.transform.GetChild(0).position, player.transform.position) / 3 - 0.16744518F, 1F);
         gameObject.transform.GetChild(0).position = new Vector3(player.transform.position.x, gameObject.transform.GetChild(0).position.y, gameObject.transform.GetChild(0).position.z);
     }
-
-
 }

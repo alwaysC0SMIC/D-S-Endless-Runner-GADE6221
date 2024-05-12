@@ -18,6 +18,7 @@ public class DemonBoss : MonoBehaviour
 
     //BOSS LOOK VARIABLES
     public Transform target;
+    private Vector3 lookOffset = new Vector3(0F, 1F, 0F);
     public float looksSpeed = 7.0f;
 
     //BOSS ATTACK VARIABLES
@@ -69,12 +70,12 @@ public class DemonBoss : MonoBehaviour
 
         //MAKES BOSS ALWAYS FACE PLAYER AFTER ARRIVING
         //REF: https://discussions.unity.com/t/how-can-i-make-a-game-object-look-at-another-object/98932
-        if (target != null)
-        {
-            Vector3 dir = target.position - transform.position;
-            Quaternion lookRot = Quaternion.LookRotation(dir);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * looksSpeed);
-        }
+        //if (target != null)
+        //{
+        //    Vector3 dir = (target.position/4 - transform.position);
+        //    Quaternion lookRot = Quaternion.LookRotation(dir);
+        //    transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * looksSpeed);
+        //}
 
         //BOSS ATTACK
         if (!attackBool)

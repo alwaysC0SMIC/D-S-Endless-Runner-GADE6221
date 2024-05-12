@@ -12,6 +12,7 @@ public class FloorEnemy : MonoBehaviour
     private bool movingRight = false;
 
     PlayerDodgeMovement pdm;
+    PlayerJump pj;
     private ParticleSystem bloodParticles;
 
     //CAM SHAKE AND TIME RAMP VARIABLES
@@ -22,10 +23,11 @@ public class FloorEnemy : MonoBehaviour
 
     private void Awake()
     {
-        pdm = GameObject.Find("PLAYER").GetComponent<PlayerDodgeMovement>();
+        pdm = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerDodgeMovement>();
+        pj = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerJump>();
         bloodParticles = GetComponentInChildren<ParticleSystem>();
 
-        shake = GameObject.Find("ISO CAMERA").GetComponent<CameraShake>();
+        shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraShake>();
 
         int moveSpeed = UnityEngine.Random.Range(1, 5);
         movementSpeed = moveSpeed;
@@ -92,6 +94,8 @@ public class FloorEnemy : MonoBehaviour
             {
                 pdm.addScore(2);
             }
+            pj.attackEnemy();
+
             isAlive = false;
             //shake.Shake();
             //DISABLES MESH AND COLLIDER AND STARTS TIMER FOR DESPAWN WHILE PLAYING BLOOD SPLATTER

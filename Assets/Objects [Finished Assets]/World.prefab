@@ -52,7 +52,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 10, y: 20, z: 0}
+  m_Size: {x: 20, y: 20, z: 0}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2437796817237133741
 MonoBehaviour:
@@ -127,6 +127,7 @@ GameObject:
   - component: {fileID: 2809493386216915571}
   - component: {fileID: 8624164003941560781}
   - component: {fileID: 5732604566861203875}
+  - component: {fileID: 8022450842888585726}
   m_Layer: 0
   m_Name: DestroyerCollision
   m_TagString: DestroyerTrigger
@@ -197,6 +198,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 1
+--- !u!114 &8022450842888585726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2428649147227414190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fa1a6f8cdccfc94da6ee8752a419883, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2695785447406216254
 GameObject:
   m_ObjectHideFlags: 0
@@ -433,7 +446,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba9a6b8e9a9a7db4e9b22ad06842a259, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameSpeed: 5
+  gameSpeed: 6
   currentLevel: 0
   levelCounter: 0
   activeBossHP: 0
