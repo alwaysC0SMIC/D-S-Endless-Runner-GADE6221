@@ -1,3 +1,5 @@
+MOST RECENT VERSION IS IN PART 2 BRANCH
+
 Endless Runner v2.0
 === External Assets/Packages Used ===
 [References will be formatted properly for part 3 of POE]
