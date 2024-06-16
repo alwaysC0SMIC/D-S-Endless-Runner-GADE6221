@@ -9,6 +9,7 @@ public class StompFX : MonoBehaviour
     private GameObject player;
     private Rigidbody playerRB;
     private World world;
+    private AudioManager am;
 
     //FX BUFFER
     //private float timer = 1F;
@@ -21,6 +22,7 @@ public class StompFX : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         playerRB = player.GetComponent<Rigidbody>();
         particles.Stop();
+        am = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
     }
 
     // Update is called once per frame
@@ -33,6 +35,7 @@ public class StompFX : MonoBehaviour
             particles.Stop();
             transform.position = new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z);
             particles.Play();
+            am.playStompSFX();
             player.GetComponent<PlayerJump>().stomp = false;
         }
         else {

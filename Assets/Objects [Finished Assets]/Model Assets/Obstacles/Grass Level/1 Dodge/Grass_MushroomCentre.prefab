@@ -146,6 +146,26 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -6524388871421036292, guid: ab404a29358e19c4eabadba77b641116,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -6524388871421036292, guid: ab404a29358e19c4eabadba77b641116,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 992d3106edb52be45bba8b27332e0fe5, type: 2}
+    - target: {fileID: 139079733888499047, guid: ab404a29358e19c4eabadba77b641116,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 139079733888499047, guid: ab404a29358e19c4eabadba77b641116,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 992d3106edb52be45bba8b27332e0fe5, type: 2}
     - target: {fileID: 919132149155446097, guid: ab404a29358e19c4eabadba77b641116,
         type: 3}
       propertyPath: m_Name
@@ -156,6 +176,16 @@ PrefabInstance:
       propertyPath: m_TagString
       value: ObstacleTrigger1
       objectReference: {fileID: 0}
+    - target: {fileID: 2945810378580653645, guid: ab404a29358e19c4eabadba77b641116,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2945810378580653645, guid: ab404a29358e19c4eabadba77b641116,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 992d3106edb52be45bba8b27332e0fe5, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

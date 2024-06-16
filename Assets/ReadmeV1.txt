@@ -1,4 +1,4 @@
-Endless Runner v1.0 - OLD VERSION
+Endless Runner v2.0
 
 
 === CONTROLS ===

@@ -14,6 +14,7 @@ public class FloorEnemy : MonoBehaviour
     PlayerDodgeMovement pdm;
     PlayerJump pj;
     private ParticleSystem bloodParticles;
+    private AudioManager am;
 
     //CAM SHAKE AND TIME RAMP VARIABLES
     private float timeRampCounter;
@@ -26,6 +27,7 @@ public class FloorEnemy : MonoBehaviour
         pdm = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerDodgeMovement>();
         pj = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerJump>();
         bloodParticles = GetComponentInChildren<ParticleSystem>();
+        am = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
 
         shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraShake>();
 
@@ -107,13 +109,14 @@ public class FloorEnemy : MonoBehaviour
             if (other.gameObject.transform.position.x > transform.position.x)
             {
                 bloodParticles.Play();
+                
             }
             else {
                 //CHANGE DIRECTION OF BLOOD SPRAY
                 gameObject.transform.rotation = new Quaternion(gameObject.transform.rotation.x, gameObject.transform.rotation.y+180, gameObject.transform.rotation.z, gameObject.transform.rotation.w);
                 bloodParticles.Play();
             }
-
+            am.playSplatterSFX();
             Invoke("Despawn", 5F);
         }
     }

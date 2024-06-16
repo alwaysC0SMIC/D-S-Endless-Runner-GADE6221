@@ -49,6 +49,8 @@ public class PlayerDodgeMovement : MonoBehaviour
     private bool movingL2 = false;
     private bool movingL3 = false;
 
+    private bool isDashing = false;
+
     //PLAYER HP
     private int playerHP = 2;
     private int maxPlayerHP = 2;
@@ -190,16 +192,30 @@ public class PlayerDodgeMovement : MonoBehaviour
         //===ACTIONS===
         if (movingL1)
         {
+                if (!isDashing)
+                {
+                    audioManager.playDashSFX();
+                    isDashing = true;
+                    Invoke("ResetDashSFX", 0.2F);
+                }
+
                 transform.position = Vector3.MoveTowards(transform.position, lane1Pos, horizontalMoveSpeed * Time.deltaTime);
 
                 if (transform.position == lane1Pos)
-            {
+                {
                 movingL1 = false;
                     direction = 0;
                 }
         }
         else if (movingL2)
         {
+                if (!isDashing)
+                {
+                    audioManager.playDashSFX();
+                    isDashing = true;
+                    Invoke("ResetDashSFX", 0.2F);
+                }
+
                 transform.position = Vector3.MoveTowards(transform.position, lane2Pos, horizontalMoveSpeed * Time.deltaTime);
 
                 if (transform.position == lane2Pos)
@@ -210,6 +226,13 @@ public class PlayerDodgeMovement : MonoBehaviour
         }
         else if (movingL3)
         {
+                if (!isDashing)
+                {
+                    audioManager.playDashSFX();
+                    isDashing = true;
+                    Invoke("ResetDashSFX", 0.2F);
+                }
+
                 transform.position = Vector3.MoveTowards(transform.position, lane3Pos, horizontalMoveSpeed * Time.deltaTime);
 
                 if (transform.position == lane3Pos)
@@ -221,9 +244,11 @@ public class PlayerDodgeMovement : MonoBehaviour
         }
         //FOR PAUSING GAME
         if (Input.GetKeyDown(KeyCode.Escape) && !isPaused) {
+            
             GamePause();
         } else if ((Input.GetKeyDown(KeyCode.Escape) && isPaused))
         {
+            
             GameResume();
         }
 
@@ -271,6 +296,7 @@ public class PlayerDodgeMovement : MonoBehaviour
         //ACTIVATES WHEN ACTIVATING HEALTH PICKUP
         if (other.gameObject.CompareTag("HealthTrigger"))
         {
+            audioManager.playPotionSFX();
             addScore(1);
             if (playerHP < maxPlayerHP)
             {
@@ -292,6 +318,10 @@ public class PlayerDodgeMovement : MonoBehaviour
             activateScoreMultiplier();
             Invoke("deactivateScoreMultiplier", scoreMultTimePeriod);
         }
+    }
+
+    private void ResetDashSFX() {
+        isDashing = false;
     }
 
     private void unlockPlayerMovement() {
@@ -327,6 +357,7 @@ public class PlayerDodgeMovement : MonoBehaviour
     }
 
     public void damagePlayer() {
+        audioManager.playPlayerInjureSFX();
         playerHP--;
         damage = true; 
         shake.Shake();
@@ -345,6 +376,7 @@ public class PlayerDodgeMovement : MonoBehaviour
 
     //INVINCIBILITY ITEM
     public void activateInvincibility() {
+        audioManager.playPotionSFX();
         invincible = true;
     }
 
@@ -354,6 +386,7 @@ public class PlayerDodgeMovement : MonoBehaviour
 
     //SCORE MULTIPLIER ITEM
     public void activateScoreMultiplier() {
+        audioManager.playPotionSFX();
         scoreMultiply = true;
         scoreMultiplier = 2F;
     }
@@ -373,6 +406,7 @@ public class PlayerDodgeMovement : MonoBehaviour
 
     //PAUSING/RESTARTING GAME:
     public void GamePause() {
+        audioManager.playUISFX();
         isPaused = true;
         CancelInvoke("Shake");
         Time.timeScale = 0;
@@ -380,12 +414,14 @@ public class PlayerDodgeMovement : MonoBehaviour
     }
 
     public void GameResume() {
+        audioManager.playUISFX();
         isPaused = false;
         Time.timeScale = 1;
         pauseScreenUI.SetActive(false);
     }
 
     public void RestartRun() {
+        audioManager.playUISFX();
         CancelInvoke("Shake");
         deathScreenUI.SetActive(false);
             lvlLoader.PlayTransition();
@@ -397,7 +433,8 @@ public class PlayerDodgeMovement : MonoBehaviour
 
     //EXITTING BACK TO MENU WITH TRANSITION
     public void ExitToMainMenu() {
-            lvlLoader.PlayTransition();
+        audioManager.playUISFX();
+        lvlLoader.PlayTransition();
         Invoke("changeToMenu", 0.5F);
         Time.timeScale = 1;
     }

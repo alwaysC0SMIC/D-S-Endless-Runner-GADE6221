@@ -21,6 +21,7 @@ public class LevelLoader : MonoBehaviour
         //TRANSITION ANIMATORS
         top = transform.GetChild(0).GetChild(0).GetComponent<Animator>();
         bottom = transform.GetChild(0).GetChild(1).GetComponent<Animator>();
+        //PlayTransition();
     }
 
     void Update()

@@ -92,7 +92,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1955939868984107665}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!114 &4191274150171394175
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,9 +150,10 @@ GameObject:
   - component: {fileID: 5192608993815848581}
   - component: {fileID: 3965387855637746891}
   - component: {fileID: 8468029272839351225}
+  - component: {fileID: 616451984090762477}
   m_Layer: 0
   m_Name: ISO CAMERA
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -203,11 +204,11 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: -6.61
+  near clip plane: -15.26
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 6
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -230,7 +231,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7907641908403144176}
-  m_Enabled: 0
+  m_Enabled: 1
 --- !u!114 &3965387855637746891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -289,6 +290,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shakeDuration: 0.2
   shakeIntensity: 0.1
+--- !u!95 &616451984090762477
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7907641908403144176}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 16c7d8d9b865e6243b833ad1459f9810, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8465502522470218735
 GameObject:
   m_ObjectHideFlags: 0

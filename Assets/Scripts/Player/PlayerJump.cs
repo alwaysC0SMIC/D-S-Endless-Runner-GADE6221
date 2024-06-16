@@ -36,6 +36,8 @@ public class PlayerJump : MonoBehaviour
     private PlayerDodgeMovement pdm;
     private bool attackAnim = false;
 
+    private AudioManager am;
+
     void Start()
     {
         //groundSlam.Stop();
@@ -44,7 +46,7 @@ public class PlayerJump : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         pdm = GetComponent<PlayerDodgeMovement>();
         shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraShake>();
-
+        am = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
         world = GameObject.FindGameObjectWithTag("World").GetComponent<World>();
 
         //UNLOCKS PLAYER MOVEMENT AFTER EXITING HOUSE
@@ -145,6 +147,7 @@ public class PlayerJump : MonoBehaviour
         }
         rigid.velocity = new Vector3(rigid.position.x, jumpHeight, rigid.position.z);
         jumpBufferCounter = 0;
+        am.playJumpSFX();
     }
 
     //METHOD FOR STOMP ACTION
@@ -174,6 +177,7 @@ public class PlayerJump : MonoBehaviour
     //}
 
     public void attackEnemy() {
+        am.playSwordSFX();
         attackAnim = true;
         Invoke("enemyAttackAnimEnd", 0.01F);
     }

@@ -32,6 +32,8 @@ public class DemonBoss : MonoBehaviour
     private float debrisTimerCounter;
     private float debrisTimer = 4F;
 
+    private AudioManager am;
+
     void Awake()
     {
         ResetBossHP();
@@ -40,6 +42,7 @@ public class DemonBoss : MonoBehaviour
         target = GameObject.FindGameObjectWithTag("Player").transform;
         pdm = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerDodgeMovement>();
         shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraShake>();
+        am = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
     }
 
     void Update()
@@ -64,6 +67,8 @@ public class DemonBoss : MonoBehaviour
             }
             world.currentLevel++;
             world.levelGateSpawned = false;
+
+            world.numOfLevelsForBoss += 3;
 
             Destroy(this.gameObject);
         }
@@ -105,6 +110,7 @@ public class DemonBoss : MonoBehaviour
         //DOESNT TRIGGER DEBRIS ATTACK UNLESS BUFFER IS OVER
         if (hasDebrisAttack)
         {
+            
             attackTypeIndex = Random.Range(0, 1);
         }
         else
@@ -129,6 +135,8 @@ public class DemonBoss : MonoBehaviour
     //ATTACK LAUNCHED FROM BOSS ALONG X AXIS AT PLAYER (EITHER JUMP/SLIDE) - SOME ARE PARRIABLE
     private void xAxisAttack() {
 
+        am.playBossProjectileSFX();
+
         int obstacleIndex = Random.Range(0, 3);
         float projHeight = 1F;
 
@@ -148,8 +156,11 @@ public class DemonBoss : MonoBehaviour
     }
 
     private void debrisScatter() {
-            //DEBRIS 1
-            int obstacleIndex = Random.Range(4, bossProjectiles.Length);
+
+        am.playBossSlamSFX();
+
+        //DEBRIS 1
+        int obstacleIndex = Random.Range(4, bossProjectiles.Length);
             Instantiate(bossProjectiles[obstacleIndex], new Vector3(0F, 20F, debrisOffset), Quaternion.Euler(0, 0, 0));
             //DEBRIS 2
             obstacleIndex = Random.Range(4, bossProjectiles.Length);

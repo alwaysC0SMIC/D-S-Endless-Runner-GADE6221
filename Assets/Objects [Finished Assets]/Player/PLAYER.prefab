@@ -101,12 +101,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelSegments:
   - {fileID: 4534144621119119573, guid: 65eaf8cc10f3fdd49bcc6a3b48b46385, type: 3}
-  - {fileID: 4534144621119119573, guid: 65eaf8cc10f3fdd49bcc6a3b48b46385, type: 3}
+  - {fileID: 6820617189967499423, guid: c6a6f0d8067613b45b303b0df04cc02c, type: 3}
   bossLevelSegments:
   - {fileID: 358931814154555186, guid: d601cee51ea8dd94bba2408112d5da26, type: 3}
-  - {fileID: 358931814154555186, guid: d601cee51ea8dd94bba2408112d5da26, type: 3}
+  - {fileID: 995217443837509005, guid: 938eca113dff9f04f91c5e390cbfd74b, type: 3}
   levelGates:
-  - {fileID: 3864848694613899666, guid: 6c910ac30f6f4a6478df73e9846439d9, type: 3}
+  - {fileID: 4878792772771424458, guid: 68ff0bb1d57a7f04cb61ae86b11047e1, type: 3}
   level0DodgeObs:
   - {fileID: 4948948765396613599, guid: e62aff949d201484a93b4d4b33c27273, type: 3}
   - {fileID: 7870439564357632888, guid: 5d386a550bdb9bc439777ed72601561a, type: 3}
@@ -132,14 +132,23 @@ MonoBehaviour:
   - {fileID: 2981725118904358446, guid: d9dd4080a28344740984cd871dbd8160, type: 3}
   - {fileID: 5369494872376740456, guid: 283e54b0bd54d9c47a77b4f147a75bae, type: 3}
   - {fileID: 8787856255367146432, guid: 03c72b68b0a129e49b9d37f4390e446d, type: 3}
+  - {fileID: 8902476081694558406, guid: ac906453608e93346832c2c6219f9027, type: 3}
+  dungeonDodgeObs:
+  - {fileID: 2823292772249407919, guid: 6f11d20be6d2d8c419bbb29b46d80088, type: 3}
+  - {fileID: 3077527102673456015, guid: 6b547f17b40bfec48a2802e2ce95c145, type: 3}
+  - {fileID: 1022645915881410877, guid: f78be23a08dfb4c4f9315721568f384d, type: 3}
+  - {fileID: 3379604713929756379, guid: 55e126fa0c0cc23489735e875c32d786, type: 3}
+  - {fileID: 2199905742668249890, guid: da1963ddebc2cc044b775ccb5f39e5fc, type: 3}
+  - {fileID: 5865099556731083401, guid: 4c28d373a83b7cc4fa5e19bd659c2db0, type: 3}
   pickupItem:
   - {fileID: 6215284254472981269, guid: 3fe87e2d72bb173499812975783503fe, type: 3}
   - {fileID: 8919676217532759954, guid: 1234e1960b2d2364dbd700bb470144c8, type: 3}
   - {fileID: 6122878182950884392, guid: cdaddc49a32363940836047fe84ff6d3, type: 3}
   distCounter: {fileID: 0}
   totalDistance: 0
-  enemies:
-  - {fileID: 2611392598119326581, guid: 5aef4578ef68cfe41a5d52e1aa8f09a2, type: 3}
+  level1Enemies:
+  - {fileID: 5146781853699458222, guid: 16baed784da18754abffd950256e0e92, type: 3}
+  - {fileID: 1885569122587024319, guid: cfa0c4aa53ca0c047a490c4489fa3673, type: 3}
   bossMode: 0
   bossSpawn: 0
   bosses:

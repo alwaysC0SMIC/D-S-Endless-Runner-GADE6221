@@ -24,6 +24,7 @@ public class SegmentTrigger : MonoBehaviour
     private GameObject[] currentObs;
     public GameObject[] level0DodgeObs;
     public GameObject[] grassDodgeObs;
+    [SerializeField] GameObject[] dungeonDodgeObs;
 
     private bool[] rowFilled = new bool[34];
     private float[] zPosition = new float[34];
@@ -36,7 +37,8 @@ public class SegmentTrigger : MonoBehaviour
     public int totalDistance;
 
     //ENEMY VARIABLES
-    [SerializeField] GameObject[] enemies;
+    private GameObject[] currentEnemies;
+    [SerializeField] GameObject[] level1Enemies;
 
     //BOSS VARIABLES
     public bool bossMode = false;
@@ -115,7 +117,9 @@ public class SegmentTrigger : MonoBehaviour
                 generateRows(rowFilled);
                 fillRows(getObstaclesForLevel(levelIndex), zPosition);
                 addPickUps(pickupItem, false);
-                addEnemies(enemies, zPosition);
+
+
+                addEnemies(GetEnemies(levelIndex), zPosition);
                 levelGateSpawn();
 
                 resetRows();
@@ -218,7 +222,9 @@ public class SegmentTrigger : MonoBehaviour
         {
             if (!rowFilled[i] && !rowFilled[i + 1] && !rowFilled[i - 1] && !rowFilled[i + 2] && !rowFilled[i - 2])
             {
-                Instantiate(enemies[0], new Vector3(0, 0F, zPosition[i]), Quaternion.Euler(0, 0, 0));
+                int randomSFX = UnityEngine.Random.Range(0, enemies.Length);
+
+                Instantiate(enemies[randomSFX], new Vector3(0, 0F, zPosition[i]), Quaternion.Euler(0, 0, 0));
                 rowFilled[i] = true;
             }
             i++;
@@ -266,12 +272,27 @@ public class SegmentTrigger : MonoBehaviour
         return selectedLevel;
     }
 
+    public GameObject[] GetEnemies(int levelIndex) {
+        switch (levelIndex) {
+            default:
+                currentEnemies = level1Enemies;
+                break;
+        }
+        return currentEnemies;
+    }
+
     public GameObject[] getObstaclesForLevel(int levelIndex) {
         switch (levelIndex) {
 
             case 0:
-                currentObs = grassDodgeObs;    //SET TO 1 (GRASS LEVEL)
+                currentObs = grassDodgeObs;     //SET TO 1 (GRASS LEVEL)
                 break;
+            case 1:
+                currentObs = dungeonDodgeObs;    //SET TO 2 (GRASS LEVEL)
+                break;
+            //case 2:
+            //    currentObs = dungeonDodgeObs;   //SET TO 2 (DUNGEON LEVEL)
+            //    break;
             default:
                 currentObs = grassDodgeObs;    //LEVEL 1 OBSTACLES BY DEFAULT
                 break;

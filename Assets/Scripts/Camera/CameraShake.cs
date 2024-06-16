@@ -12,9 +12,12 @@ public class CameraShake : MonoBehaviour
     private Vector3 initialPosition;
     private float currentShakeDuration = 0F;
 
+    private Animator animator;
     void Start()
     {
-        initialPosition = transform.localPosition;    
+        animator = GetComponent<Animator>();
+        initialPosition = transform.localPosition;
+        Invoke("disableAnimate", 5F);
     }
 
     void Update()
@@ -34,5 +37,10 @@ public class CameraShake : MonoBehaviour
     //TRIGGERS CAMERA SHAKE
     public void Shake() {
         currentShakeDuration = shakeDuration;
+    }
+
+    //DISABLE ANIMATOR TO ALLOW SHAKE
+    private void disableAnimate() {
+        animator.enabled = false;
     }
 }

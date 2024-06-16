@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SearchService;
+
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
@@ -24,7 +24,15 @@ public class AudioManager : MonoBehaviour
     [SerializeField] AudioClip[] musicClips;    // 0 - MainMenu, 1 - Gameplay
 
     //SFX CLIP VARIABLES
-    [SerializeField] AudioClip[] sfxClips;        // 0 - IntroDoor
+    [SerializeField] AudioClip doorIntroSFXClips;
+    [SerializeField] AudioClip[] dashSFXClips;
+    [SerializeField] AudioClip[] jumpSFXClips;
+    [SerializeField] AudioClip[] swordSFXClips;
+    [SerializeField] AudioClip[] splatterSFXClips;
+    [SerializeField] AudioClip[] stompSFXClips;
+    [SerializeField] AudioClip[] uiSFXClips;
+    [SerializeField] AudioClip[] potionSFXClips;
+    [SerializeField] AudioClip[] playerInjureSFXClips;
 
     //AUDIO BOOL CHECKS
     private bool musicIsPlaying = false;
@@ -32,7 +40,9 @@ public class AudioManager : MonoBehaviour
     void Start()
     {
         currentMusicSource = transform.GetChild(0).GetComponent<AudioSource>();
-        SetMasterVolume(0.0001F);
+        SetMasterVolume(1F);
+        SetSFXVolume(1F);
+        SetMusicVolume(0.2F);
     }
 
     void Update()
@@ -52,13 +62,14 @@ public class AudioManager : MonoBehaviour
         //CHANGES MUSIC WHEN GAME LAUNCHES
         if (SceneManager.GetActiveScene().name == "Game")
         {
-            if (currentMusicSource.clip != musicClips[1])
+            if (currentMusicSource.clip == musicClips[0])
             {
                 stopMusic();
             }
                 if (!musicIsPlaying)
                 {
-                    playMusic(musicClips[1], 10F);
+                    int randomNum = Random.Range(1, musicClips.Length);
+                    playMusic(musicClips[randomNum], 10F);
                 }
         }
         if (currentMusicSource.time >= currentMusicSource.clip.length)
@@ -105,7 +116,73 @@ public class AudioManager : MonoBehaviour
         Destroy(audioSource.gameObject, clipLength);
     }
 
+    //SFX METHODS
     public void playDoorSFX() {
-        spawnSFX(sfxClips[0], transform, 1F);
+        Invoke("soundDelayForDoor", 0.5F);
     }
+    private void soundDelayForDoor() {
+        spawnSFX(doorIntroSFXClips, transform, 1F);
+    }
+
+    public void playDashSFX()
+    {
+        int randomSFX = Random.Range(0, dashSFXClips.Length);
+        spawnSFX(dashSFXClips[randomSFX], transform, 0.3F);
+        //Debug.Log(randomSFX);
+    }
+
+    public void playJumpSFX() {
+        int randomSFX = Random.Range(0, jumpSFXClips.Length);
+        spawnSFX(jumpSFXClips[randomSFX], transform, 0.25F);
+    }
+
+    public void playSwordSFX()
+    {
+        int randomSFX = Random.Range(0, swordSFXClips.Length);
+        spawnSFX(swordSFXClips[randomSFX], transform, 1F);
+    }
+
+    public void playSplatterSFX()
+    {
+        int randomSFX = Random.Range(0, splatterSFXClips.Length);
+        spawnSFX(splatterSFXClips[randomSFX], transform, 1F);
+    }
+
+    public void playStompSFX() {
+        int randomSFX = Random.Range(0, stompSFXClips.Length);
+        spawnSFX(stompSFXClips[randomSFX], transform, 0.25F);
+    }
+
+    public void playPotionSFX()
+    {
+        int randomSFX = Random.Range(0, potionSFXClips.Length);
+        spawnSFX(potionSFXClips[randomSFX], transform, 0.3F);
+    }
+
+    public void playPlayerInjureSFX() {
+        int randomSFX = Random.Range(0, playerInjureSFXClips.Length);
+        spawnSFX(playerInjureSFXClips[randomSFX], transform, 0.3F);
+    }
+
+    public void playBossInjureSFX() {
+        spawnSFX(dashSFXClips[0], transform, 1F);
+    }
+
+    public void playBossProjectileSFX()
+    {
+        spawnSFX(dashSFXClips[0], transform, 1F);
+    }
+
+    public void playUISFX()
+    {
+        int randomSFX = Random.Range(0, uiSFXClips.Length);
+        spawnSFX(uiSFXClips[randomSFX], transform, 1F);
+    }
+
+    public void playBossSlamSFX()
+    {
+        spawnSFX(dashSFXClips[0], transform, 1F);
+    }
+
+    
 }

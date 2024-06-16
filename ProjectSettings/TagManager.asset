@@ -23,6 +23,13 @@ TagManager:
   - AudioManager
   - World
   - LevelTail
+  - nameInput
+  - Leaderboard
+  - NameRecords
+  - ScoreRecords
+  - connectionError
+  - SettingsBook
+  - SettingsMenu
   layers:
   - Default
   - TransparentFX

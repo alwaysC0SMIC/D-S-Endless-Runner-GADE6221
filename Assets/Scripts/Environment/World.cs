@@ -16,7 +16,7 @@ public class World : MonoBehaviour
 
     //BOSS FIGHT VARIABLES
     public float activeBossHP = 0;
-    public int numOfLevelsForBoss = 2;
+    public int numOfLevelsForBoss = 5;
     public bool bossFight = false;
     public bool bossSpawn = false;
 
