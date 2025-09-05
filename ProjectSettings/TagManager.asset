@@ -12,6 +12,24 @@ TagManager:
   - BossInjureTrigger
   - AddScoreTrigger
   - ObstacleTrigger1
+  - Floor
+  - Boss
+  - BossTrigger
+  - Parry
+  - Enemy
+  - HealthTrigger
+  - scoreMultiplyTrigger
+  - LevelLoader
+  - AudioManager
+  - World
+  - LevelTail
+  - nameInput
+  - Leaderboard
+  - NameRecords
+  - ScoreRecords
+  - connectionError
+  - SettingsBook
+  - SettingsMenu
   layers:
   - Default
   - TransparentFX
@@ -19,8 +37,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Environment
+  - Camera
   - 
   - 
   - 

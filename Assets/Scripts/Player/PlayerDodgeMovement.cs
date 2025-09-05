@@ -1,61 +1,123 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerDodgeMovement : MonoBehaviour
 {
+    //WORLD VARIABLE
+    private World world;
+
+    public bool isPaused = false;
+    private CameraShake shake;
+    private LevelLoader lvlLoader;
+    private AudioManager audioManager;
+
     //UI OBJECTS
     [SerializeField] private GameObject deathScreenUI;
     [SerializeField] private GameObject pauseScreenUI;
 
     //PLAYER SPEEDS
-    public float moveSpeed = 30;
-    public int horizontalMoveSpeed = 100;
+    private float moveSpeed = 30;
+    private float horizontalMoveSpeed = 20;
 
     //PLAYER SCORE
     public float playerScore = 0F;
-    //private float scoreMultiplier = 0F;
+    //private float scoreMultiplier = 0F; [FOR FUTURE]
 
     //RIGIDBODY
     private Rigidbody rigid;
+    //private BoxCollider boxCollider;
+    public float direction = 0;
+
+    //PLAYER LOCK
+    private bool playerUnlock = false;
 
     //LANE VARIABLES
-    public bool lane1 = false;
-    public static float lane1co = -2F;
-    public bool lane2 = true;
-    public static float lane2co = 0F;
-    public bool lane3 = false;
-    public static float lane3co = 2F;
+    private bool lane1 = false;
+    private static float lane1co = -2F;
+    private bool lane2 = true;
+    private static float lane2co = 0F;
+    private bool lane3 = false;
+    private static float lane3co = 2F;
     public int laneNum = 2;
 
     //ACTIVE MOVEMENT BOOLS
-    bool movingL1 = false;
-    bool movingL2 = false;
-    bool movingL3 = false;
+    private bool movingL1 = false;
+    private bool movingL2 = false;
+    private bool movingL3 = false;
 
-    //PICKUP BOOLS
+    private bool isDashing = false;
+
+    //PLAYER HP
+    private int playerHP = 2;
+    private int maxPlayerHP = 2;
+    private float healthRegenerationTimePeriod = 20F;
+    private bool damage = false;
+    private bool dmgInv = false;
+
+    //PICKUPS
     public bool invincible = false;
     private float invincibleTimePeriod = 5F;
 
-    //MESH VARIABLES
-    [SerializeField] GameObject playerModel;
+    public float scoreMultiplier = 1F;
+    public bool scoreMultiply = false;
+    private float scoreMultTimePeriod = 10F;
+
+    //MESH + MATERIAL VARIABLES
+    //[SerializeField] GameObject playerModel;
+    private SpriteRenderer playerModel;
     public Material playerMaterial;
     public Material invMaterial;
-
-    //BOSS RELATED VARIABLES
-    public bool attackingBoss = false;
+    public Material damageMaterial;
+    private Material currentMaterial;
 
     void Awake()
     {
         rigid = GetComponent<Rigidbody>();
         playerScore = 0;
+
+        playerModel = GetComponentInChildren<SpriteRenderer>();
+        //currentMaterial = playerMaterial;
+
+        //UNLOCKS PLAYER MOVEMENT AFTER EXITING HOUSE
+        Invoke("unlockPlayerMovement", 2);
+        shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraShake>();
+        lvlLoader = GameObject.FindGameObjectWithTag("LevelLoader").GetComponent<LevelLoader>();
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();   
+    }
+
+    private void Start()
+    {
+        world = GameObject.FindGameObjectWithTag("World").GetComponent<World>();
+        audioManager.playDoorSFX();
     }
 
     void Update()
     {
-        //Debug.Log(playerScore);
+        //Debug.Log(scoreMultiplier);
+
+        //UPDATES CHARACTER'S MATERIAL
+        //playerModel.GetComponent<MeshRenderer>().material = currentMaterial;
+
+        if (invincible)
+        {
+            //currentMaterial = invMaterial;
+            playerModel.color = Color.green;
+        }
+        else if (damage)
+        {
+            playerModel.color = Color.red;
+            //currentMaterial = damageMaterial;
+        }
+        else if (!damage && !invincible)
+        {
+            //currentMaterial = playerMaterial;
+            playerModel.color = Color.white;
+        }
+
         //MOVING FORWARD
         Vector3 stay = new Vector3(0, 0, 0);
         transform.Translate(stay * Time.deltaTime * moveSpeed, Space.World);
@@ -65,158 +127,332 @@ public class PlayerDodgeMovement : MonoBehaviour
         Vector3 lane2Pos = new Vector3(lane2co, transform.position.y, transform.position.z);
         Vector3 lane3Pos = new Vector3(lane3co, transform.position.y, transform.position.z);
 
+        if (playerUnlock)
+        {
         //===KEY INPUTS:===
         //===LEFT SIDE===
         //MIDDLE TO LEFT
         if ((Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) && lane2 && lane1 == false)
         {
             movingL1 = true;
+            movingL2 = false;
+            movingL3 = false;
+
             lane2 = false;
             lane1 = true;
             lane3 = false;
             laneNum = 1;
+            direction = -1;
         }
         //RIGHT TO MIDDLE
         else if ((Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) && lane3 && lane2 == false)
         {
             movingL2 = true;
+
+            movingL1 = false;
+            movingL3 = false;
+
             lane1 = false;
             lane2 = true;
             lane3 = false;
             laneNum = 2;
-        }
+                direction = -1;
+            }
 
         //===RIGHT SIDE===
         //MIDDLE TO RIGHT
         else if ((Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) && lane2 && lane3 == false)
         {
             movingL3 = true;
+
+            movingL2 = false;
+            movingL1 = false;
+
             lane1 = false;
             lane2 = false;
             lane3 = true;
             laneNum = 3;
-        }
+                direction = 1;
+            }
         //LEFT TO MIDDLE
         else if ((Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) && lane1 && lane2 == false)
         {
             movingL2 = true;
+
+            movingL1 = false;
+            movingL3 = false;
+
             lane2 = true;
             lane1 = false;
             lane3 = false;
             laneNum = 2;
-        }
+                direction = 1;
+            }
 
         //===ACTIONS===
         if (movingL1)
         {
-            transform.position = Vector3.MoveTowards(transform.position, lane1Pos, horizontalMoveSpeed * Time.deltaTime);
-            if (transform.position == lane1Pos)
-            {
+                if (!isDashing)
+                {
+                    audioManager.playDashSFX();
+                    isDashing = true;
+                    Invoke("ResetDashSFX", 0.2F);
+                }
+
+                transform.position = Vector3.MoveTowards(transform.position, lane1Pos, horizontalMoveSpeed * Time.deltaTime);
+
+                if (transform.position == lane1Pos)
+                {
                 movingL1 = false;
-            }
+                    direction = 0;
+                }
         }
         else if (movingL2)
         {
-            transform.position = Vector3.MoveTowards(transform.position, lane2Pos, horizontalMoveSpeed * Time.deltaTime);
-            if (transform.position == lane2Pos)
-            {
+                if (!isDashing)
+                {
+                    audioManager.playDashSFX();
+                    isDashing = true;
+                    Invoke("ResetDashSFX", 0.2F);
+                }
+
+                transform.position = Vector3.MoveTowards(transform.position, lane2Pos, horizontalMoveSpeed * Time.deltaTime);
+
+                if (transform.position == lane2Pos)
+                {
                 movingL2 = false;
-            }
+                    direction = 0;
+                }
         }
         else if (movingL3)
         {
-            transform.position = Vector3.MoveTowards(transform.position, lane3Pos, horizontalMoveSpeed * Time.deltaTime);
-            if (transform.position == lane3Pos)
+                if (!isDashing)
+                {
+                    audioManager.playDashSFX();
+                    isDashing = true;
+                    Invoke("ResetDashSFX", 0.2F);
+                }
+
+                transform.position = Vector3.MoveTowards(transform.position, lane3Pos, horizontalMoveSpeed * Time.deltaTime);
+
+                if (transform.position == lane3Pos)
             {
                 movingL3 = false;
-            }
+                    direction = 0;
+                }
+        }
+        }
+        //FOR PAUSING GAME
+        if (Input.GetKeyDown(KeyCode.Escape) && !isPaused) {
+            
+            GamePause();
+        } else if ((Input.GetKeyDown(KeyCode.Escape) && isPaused))
+        {
+            
+            GameResume();
         }
 
-        //FOR PAUSING GAME
-        if (Input.GetKeyDown(KeyCode.Escape)) {
-            GamePause();
+        //PLAYER HP CHECK
+        if (playerHP <= 0) {
+            PlayerDeath();
         }
+
     }
 
-
-    //FOR WHEN HITTING HAZARD OR PICKUP
+    //FOR INTERACTING WITH COLLIDERS IN-GAME
     void OnTriggerEnter(Collider other)
     {
-        //PLAYER DIES WHEN HITTING OBSTACLE
-        if ((other.gameObject.CompareTag("ObstacleTrigger") || other.gameObject.CompareTag("ObstacleTrigger1")) && invincible == false)
+        //PLAYER TAKES DAMAGE WHEN HITTING OBSTACLE
+        if ((other.gameObject.CompareTag("ObstacleTrigger") || other.gameObject.CompareTag("ObstacleTrigger1")) && !invincible && !dmgInv)
         {
-            PlayerDeath();  
+            //DAMAGES PLAYER + STARTS HP REGENERATION
+            damagePlayer();
+            Invoke("healDamage", healthRegenerationTimePeriod);
+
+            //TEMPORARY INVINCIBILITY AFTER TAKING DAMAGE
+            dmgInv = true;
+            Invoke("endDamageInvincibility", 1);
         }
 
         //INVINCIBILITY PICKUP
         if (other.gameObject.CompareTag("InvincibilityTrigger"))
         {
-            addPickUpScore();
-            StopCoroutine("InvincibilityTimer");
-            StartCoroutine("InvincibilityTimer");
+            addScore(1);
+            activateInvincibility();
+                Invoke("deactivateInvincibility", invincibleTimePeriod);
+            
+            //StopCoroutine("InvincibilityTimer");
+            //StartCoroutine("InvincibilityTimer");
+        }
+        //STACKS INVINCIBILITY TIME SHOULD ANOTHER ONE BE ACTIVATED
+        if (other.gameObject.CompareTag("InvincibilityTrigger") && invincible)
+        {
+            addScore(1);
+            CancelInvoke("deactivateInvincibility");
+            activateInvincibility();
+            Invoke("deactivateInvincibility", invincibleTimePeriod);
         }
 
-        //BOSS PROJECTILE
-        //if (other.gameObject.CompareTag("BossInjureTrigger"))
-        //{ 
-        //    other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.left*20F;
-        //    if (other.gameObject.GetComponent<Rigidbody>().position.x == -10F) {
-        //        attackingBoss = true;
-        //    }
-        //}
+        //ACTIVATES WHEN ACTIVATING HEALTH PICKUP
+        if (other.gameObject.CompareTag("HealthTrigger"))
+        {
+            audioManager.playPotionSFX();
+            addScore(1);
+            if (playerHP < maxPlayerHP)
+            {
+                healDamage();
+                CancelInvoke("healDamage");
+            }
+        }
+
+        //SCORE MULTIPLIER ACTIVATION
+        if (other.gameObject.CompareTag("scoreMultiplyTrigger"))
+        {
+            activateScoreMultiplier();
+            Invoke("deactivateScoreMultiplier", scoreMultTimePeriod);
+        }
+        //SCORE MULTIPLIER REACTIVATION IF MULTIPLE ARE PICKED UP
+        if (other.gameObject.CompareTag("scoreMultiplyTrigger") && scoreMultiply)
+        {
+            CancelInvoke("deactivateScoreMultiplier");
+            activateScoreMultiplier();
+            Invoke("deactivateScoreMultiplier", scoreMultTimePeriod);
+        }
     }
 
-    public void addObstacleScore() {
-        playerScore += 5;
-        //Debug.Log("Added obstacle score");
+    private void ResetDashSFX() {
+        isDashing = false;
     }
 
-    public void addPickUpScore() {
-        playerScore += 10;
-        //Debug.Log("Added pickup score");
+    private void unlockPlayerMovement() {
+        playerUnlock = true;
+        GetComponent<PlayerJump>().unlockPlayerMovement();
     }
 
-    //STOPS TIME + MOVEMENT AND DISPLAYS DEATH SCREEN
+    public void lockPlayerMovement() {
+        playerUnlock = false;
+        GetComponent<PlayerJump>().lockPlayerMovement();
+    }
+
+    public void addScore(int index) {
+        switch (index)
+        {
+            //OBSTACLES
+            case 0:
+                playerScore += 5 * scoreMultiplier;
+                break;
+            //PICKUPS
+            case 1:
+                playerScore += 10 * scoreMultiplier;
+                break;
+            //ENEMIES
+            case 2:
+                playerScore += 15 * scoreMultiplier;
+                break;
+            //BOSSES
+            case 3:
+                playerScore += 100 * scoreMultiplier;
+                break;
+        }
+    }
+
+    public void damagePlayer() {
+        audioManager.playPlayerInjureSFX();
+        playerHP--;
+        damage = true; 
+        shake.Shake();
+    }
+
+    //REGENERATES HP
+    public void healDamage() {
+        damage = false;
+        playerHP++;
+    }
+
+    public void endDamageInvincibility()
+    {
+        dmgInv = false;
+    }
+
+    //INVINCIBILITY ITEM
+    public void activateInvincibility() {
+        audioManager.playPotionSFX();
+        invincible = true;
+    }
+
+    public void deactivateInvincibility() {
+        invincible = false;
+    }
+
+    //SCORE MULTIPLIER ITEM
+    public void activateScoreMultiplier() {
+        audioManager.playPotionSFX();
+        scoreMultiply = true;
+        scoreMultiplier = 2F;
+    }
+
+    public void deactivateScoreMultiplier() {  
+        scoreMultiply = false;
+        scoreMultiplier = 1F;
+    }
+
+    //LOCKS MOVEMENT + DISPLAYS DEATH SCREEN
     public void PlayerDeath() {
-        horizontalMoveSpeed = 0;
-        Time.timeScale = 0;
+        isPaused = true;
+        lockPlayerMovement();
+        world.playerIsDead = true;
         deathScreenUI.SetActive(true);
-
-        //DEACCELERATION CODE
-        //float deacceleration = 1F;
-        //if (environment.gameSpeed > 0)
-        //{
-        //    environment.gameSpeed -= deacceleration * Time.deltaTime;
-        //    //Debug.Log(moveSpeed);
-        //}
     }
 
+    //PAUSING/RESTARTING GAME:
     public void GamePause() {
+        audioManager.playUISFX();
+        isPaused = true;
+        CancelInvoke("Shake");
         Time.timeScale = 0;
         pauseScreenUI.SetActive(true);
     }
 
     public void GameResume() {
+        audioManager.playUISFX();
+        isPaused = false;
         Time.timeScale = 1;
         pauseScreenUI.SetActive(false);
     }
 
     public void RestartRun() {
+        audioManager.playUISFX();
+        CancelInvoke("Shake");
         deathScreenUI.SetActive(false);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            lvlLoader.PlayTransition();
+        Invoke("changeToStart", 0.5F);
+        isPaused = false;
+        playerHP = 2;
         Time.timeScale = 1;
     }
 
-    public IEnumerator InvincibilityTimer()
-    {
-        invincible = true;
-        playerModel.GetComponent<MeshRenderer>().material = invMaterial;
-
-        yield return new WaitForSeconds(invincibleTimePeriod);
-
-        invincible = false;
-        playerModel.GetComponent<MeshRenderer>().material = playerMaterial;
+    //EXITTING BACK TO MENU WITH TRANSITION
+    public void ExitToMainMenu() {
+        audioManager.playUISFX();
+        lvlLoader.PlayTransition();
+        Invoke("changeToMenu", 0.5F);
+        Time.timeScale = 1;
     }
-}
+
+    private void changeToMenu() {
+        SceneManager.LoadSceneAsync(sceneName: "MainMenu");
+    }
+
+    private void changeToStart() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    //ANIMATION
+    private void dodgeLeft()
+    {
+        direction = -1;
+    }
+
+}//CLASS END
 
 

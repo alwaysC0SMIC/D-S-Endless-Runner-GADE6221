@@ -10,7 +10,7 @@ public class GivePoints : MonoBehaviour
     {
         if (other.gameObject.CompareTag("ObstacleTrigger1"))
         {
-            player.GetComponent<PlayerDodgeMovement>().addObstacleScore();
+            player.GetComponent<PlayerDodgeMovement>().addScore(0);
             //Debug.Log("Adding obstacle points - collider");
         }
     }

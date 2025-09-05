@@ -1,0 +1,32 @@
+External Assets/Packages Used:
+==============================
+
+[References will be formatted properly for part 3 of POE]
+
+Github: 
+
+Used:
+Aseprite
+Unity 2022
+FL Studio - Music for the game was created by myself in FL Studio.	https://www.image-line.com/lp/front
+BlockBench - Modelled and textured rough assets in Blockbench for easy pixelart style (blender made unwrapping difficult). https://www.blockbench.net
+
+Door Open SFX - Modified in FL Studio, original: https://youtu.be/rKLCEzF1XGo?si=28zsZt-xCLktQzYg
+Artlist SFXs:
+Knights & Weapons - Blood, Stab, Sticky, Splatter - Soundtrack Creation
+Medieval Weapons - Sword Swing, Whoosh - HD Audio
+Magical Game - Magic Potion, Bubbly - Unrealsfx
+Crunch Hunch - Breaking Celery 01 - Effectsworks
+Mobile Game - Menu, Double Click, Vintage Type Writer Button, Reverb - Epic Stock Media
+Unarmed Combat - Whoosh, Powerful - HD Audio
+Trailer Force - Deep Cavern Impact - Epic Stock Media
+Designed Passbys - Fast Projectile Fly By Whoosh - SoundBits
+
+Not used:
+EZ Camera Shake - https://github.com/andersonaddo/EZ-Camera-Shake-Unity/releases/tag/v1.06
+Tutorial for shake: https://www.youtube.com/watch?v=9A9yj8KnM8c
+
+Unity Packages Used:
+2D Sprite
+TextMeshPro
+Aseprite Importer
