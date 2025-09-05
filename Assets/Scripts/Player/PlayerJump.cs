@@ -12,7 +12,7 @@ public class PlayerJump : MonoBehaviour
     //private static float jumpSpeed = 10F;
     private static float stompSpeed = -65F;
 
-    private bool isSlide = false;
+    public bool isSlide = false;
     private static float slideTimePeriod = 1F;
     private float slideTimeCounter;
 
@@ -119,12 +119,19 @@ public class PlayerJump : MonoBehaviour
         if (isSlide) {
             if (slideTimeCounter > 0)
             {
+                animator.SetBool("slide", true);
                 slideTimeCounter -= Time.deltaTime;
             }
             else {
                 slideTimeCounter = 0;
+                animator.SetBool("slide", false);
                 isSlide = false;
             }
+        }
+
+        if (transform.gameObject.transform.position.y > 1F)
+        {
+            animator.SetBool("slide", false);
         }
     }
 

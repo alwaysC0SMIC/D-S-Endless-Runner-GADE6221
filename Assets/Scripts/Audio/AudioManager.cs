@@ -40,9 +40,9 @@ public class AudioManager : MonoBehaviour
     void Start()
     {
         currentMusicSource = transform.GetChild(0).GetComponent<AudioSource>();
-        SetMasterVolume(1F);
-        SetSFXVolume(1F);
-        SetMusicVolume(0.2F);
+        //SetMasterVolume(1F);
+        //SetSFXVolume(1F);
+        //SetMusicVolume(0.2F);
     }
 
     void Update()

@@ -86,7 +86,7 @@ public class SegmentTrigger : MonoBehaviour
         //RESETS LEVEL ARRAY IF YOU REACH THE END OF IT
         if (world.currentLevel == levelSegments.Length)
         {
-            Debug.Log("You reached the end of levels, restarting cycle");
+            //Debug.Log("You reached the end of levels, restarting cycle");
             world.currentLevel = 0;
         }
 
@@ -234,7 +234,7 @@ public class SegmentTrigger : MonoBehaviour
     public void levelGateSpawn() {
         if (!world.levelGateSpawned) {
             //GENERATE LEVEL GATE PREFAB
-            Instantiate(levelGates[0], new Vector3(0F, 0F, 34F), Quaternion.Euler(0, 0, 0));
+            Instantiate(levelGates[levelIndex], new Vector3(0F, 0F, 34F), Quaternion.Euler(0, 0, 0));
             world.levelGateSpawned = true;
         }
     }
@@ -326,8 +326,11 @@ public class SegmentTrigger : MonoBehaviour
             case 0:
                 boss = bosses[0];   //BOSS 1
                 break;
+            case 1:
+                boss = bosses[1];   //BOSS 2
+                break;
             default:
-                boss = bosses[0];   //DEMON BOY BY DEFAULT
+                boss = bosses[0];   //MUSH BY DEFAULT
                 break;
         }
         return boss;

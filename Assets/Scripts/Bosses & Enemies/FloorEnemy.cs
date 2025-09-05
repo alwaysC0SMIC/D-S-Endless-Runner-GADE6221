@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -41,7 +42,14 @@ public class FloorEnemy : MonoBehaviour
 
         if (isAlive)
         {
-            enemyAttack = this.transform.GetChild(1).gameObject.GetComponent<EnemyAttack>().attackPlayer;
+            try
+            {
+                enemyAttack = this.transform.GetChild(1).gameObject.GetComponent<EnemyAttack>().attackPlayer;
+            }
+            catch (Exception e) { 
+                
+            }
+
 
             Vector3 leftPos = new Vector3(-2, transform.position.y, transform.position.z);
             Vector3 rightPos = new Vector3(2, transform.position.y, transform.position.z);

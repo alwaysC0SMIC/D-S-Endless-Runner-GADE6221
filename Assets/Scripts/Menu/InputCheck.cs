@@ -30,14 +30,14 @@ public class InputCheck : MonoBehaviour
         {
             string name = textField.GetComponent<TMP_InputField>().text;
             //Debug.Log("Text Check: " + name);            
-                Debug.Log("Text Check: " + name);
+                //Debug.Log("Text Check: " + name);
 
                 //GETS SCORE
                 score = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerDodgeMovement>().playerScore;
                 distance = GameObject.FindGameObjectWithTag("Player").GetComponent<DistanceCounter>().distance;
                 distance = Mathf.RoundToInt(distance);
 
-                Debug.Log(score + " " + distance);
+                //Debug.Log(score + " " + distance);
                 playerName = name;
 
                 //CONFIRMS SUBMISSION
@@ -50,7 +50,7 @@ public class InputCheck : MonoBehaviour
             }
             else
             {
-                Debug.Log("Invalid name");
+                //Debug.Log("Invalid name");
                 //textField.GetComponent<TMP_InputField>().placeholder.GetComponent<Text>().text = "Invalid Name";
             }  
     }

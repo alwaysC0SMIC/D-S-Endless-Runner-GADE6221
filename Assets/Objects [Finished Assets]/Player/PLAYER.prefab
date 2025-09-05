@@ -100,13 +100,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelSegments:
-  - {fileID: 4534144621119119573, guid: 65eaf8cc10f3fdd49bcc6a3b48b46385, type: 3}
+  - {fileID: 5316871254545302211, guid: 15b64475e3d58094390f65dd9c6ce93d, type: 3}
   - {fileID: 6820617189967499423, guid: c6a6f0d8067613b45b303b0df04cc02c, type: 3}
   bossLevelSegments:
   - {fileID: 358931814154555186, guid: d601cee51ea8dd94bba2408112d5da26, type: 3}
   - {fileID: 995217443837509005, guid: 938eca113dff9f04f91c5e390cbfd74b, type: 3}
   levelGates:
   - {fileID: 4878792772771424458, guid: 68ff0bb1d57a7f04cb61ae86b11047e1, type: 3}
+  - {fileID: 8984355147282002259, guid: 77bd3a9d15efc864bac2d910fb5230da, type: 3}
   level0DodgeObs:
   - {fileID: 4948948765396613599, guid: e62aff949d201484a93b4d4b33c27273, type: 3}
   - {fileID: 7870439564357632888, guid: 5d386a550bdb9bc439777ed72601561a, type: 3}
@@ -140,6 +141,7 @@ MonoBehaviour:
   - {fileID: 3379604713929756379, guid: 55e126fa0c0cc23489735e875c32d786, type: 3}
   - {fileID: 2199905742668249890, guid: da1963ddebc2cc044b775ccb5f39e5fc, type: 3}
   - {fileID: 5865099556731083401, guid: 4c28d373a83b7cc4fa5e19bd659c2db0, type: 3}
+  - {fileID: 1748872754019795102, guid: 3f6f35f63badc754cbb3f13225eab78c, type: 3}
   pickupItem:
   - {fileID: 6215284254472981269, guid: 3fe87e2d72bb173499812975783503fe, type: 3}
   - {fileID: 8919676217532759954, guid: 1234e1960b2d2364dbd700bb470144c8, type: 3}
@@ -153,6 +155,7 @@ MonoBehaviour:
   bossSpawn: 0
   bosses:
   - {fileID: 4396594772562095388, guid: 5e98f7a142e046849b1047acc5f3c3e3, type: 3}
+  - {fileID: 4592764734392069036, guid: 1e2d7b3d5a66a0542920df4d04d4be54, type: 3}
   bossSpawner: {fileID: 8115303546060502384, guid: 4f1e524f1ea5e8247b7017d5fd60aca8,
     type: 3}
   bossUI: {fileID: 0}
@@ -192,6 +195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07ae00aa59a7de04b8c2b0cb528ff913, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isSlide: 0
   stomp: 0
   animStomp: 0
 --- !u!114 &297939988341189975
@@ -256,7 +260,7 @@ TrailRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -2
   m_Time: 0.3
   m_PreviewTimeScale: 1
   m_Parameters:
@@ -354,13 +358,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3833693008320744750}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.38268343, z: -0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 0.015999999, z: -0.001}
-  m_LocalScale: {x: 0.04, y: 0.04, z: 0.04}
-  m_ConstrainProportionsScale: 0
+  m_LocalRotation: {x: 0.19996412, y: -0.3736123, z: 0.08282785, w: 0.90198}
+  m_LocalPosition: {x: 0.0039, y: 0.015999999, z: -0.0033}
+  m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 5209714574127030851}
-  m_LocalEulerAnglesHint: {x: 0, y: -45, z: 0}
+  m_LocalEulerAnglesHint: {x: 25, y: -45, z: 0}
 --- !u!212 &3480782061706715597
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -402,8 +406,9 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: cc8e21bb399ff6d4984c818a2d2c7c58, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 1643332891414425906, guid: e615661c0139cb245b1de52146afd0a2,
+    type: 3}
+  m_Color: {r: 1, g: 0.7490196, b: 0.5882353, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

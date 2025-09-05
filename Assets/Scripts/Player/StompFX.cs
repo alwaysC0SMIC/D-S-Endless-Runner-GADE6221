@@ -11,6 +11,8 @@ public class StompFX : MonoBehaviour
     private World world;
     private AudioManager am;
 
+    private bool playSlideParticles = false;
+
     //FX BUFFER
     //private float timer = 1F;
     //private float timerCounter;
@@ -28,6 +30,7 @@ public class StompFX : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         //PLAYS STOMP WHEN ACTIVATED
         if (player.GetComponent<PlayerJump>().stomp && player.transform.position.y <= 1.2F)
         {
@@ -39,16 +42,29 @@ public class StompFX : MonoBehaviour
             player.GetComponent<PlayerJump>().stomp = false;
         }
         else {
+            if (player.GetComponent<PlayerJump>().isSlide && player.transform.position.y <= 1.2F && !playSlideParticles)
+            {
+                particles.Stop();
+                transform.position = new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z);
+                particles.Play();
+                playSlideParticles = true;
+                Invoke("SlideParticleReset", 1F);
+            }
+
             //AVOIDS PARTICLE SYSTEM GOING TO FAR INTO DESTROYER COLLIDER
             if (transform.position.z > -10) {
                 transform.Translate(Vector3.back * world.gameSpeed * Time.deltaTime, Space.World);
             }
-        } 
+        }
 
         //else {
         //    transform.position = new Vector3(transform.position.x, transform.position.y, player.transform.position.z);
         //}    
 
+    }
+
+    private void SlideParticleReset() {
+        playSlideParticles = false;
     }
 
     //private void OnTriggerEnter(Collider collision)

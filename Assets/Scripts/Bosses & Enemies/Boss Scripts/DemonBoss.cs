@@ -34,6 +34,10 @@ public class DemonBoss : MonoBehaviour
 
     private AudioManager am;
 
+    private ParticleSystem dmgParticles;
+
+    [SerializeField] GameObject deathParticles;
+
     void Awake()
     {
         ResetBossHP();
@@ -43,6 +47,8 @@ public class DemonBoss : MonoBehaviour
         pdm = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerDodgeMovement>();
         shake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraShake>();
         am = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+
+        dmgParticles = transform.GetChild(2).GetComponent<ParticleSystem>();
     }
 
     void Update()
@@ -83,7 +89,7 @@ public class DemonBoss : MonoBehaviour
         //}
 
         //BOSS ATTACK
-        if (!attackBool)
+        if (!attackBool && bossHP > 0)
         {
             float attackTime = UnityEngine.Random.Range(minAttackTime, maxAttackTime);
             Invoke("ExecuteAttack", attackTime);
@@ -103,6 +109,12 @@ public class DemonBoss : MonoBehaviour
     //X-AXIS JUMP AND SLIDE THROWS
     //THROWING UPCOMING OBSTACLES
     //TEMPORARY LANE DENIAL
+
+    private void OnDestroy()
+    {
+        Instantiate(deathParticles, new Vector3(-6F, 2F, 2F), Quaternion.Euler(0F,0F,0F));
+        am.playBossInjureSFX();
+    }
 
     private void ExecuteAttack() {
 
@@ -136,7 +148,7 @@ public class DemonBoss : MonoBehaviour
     private void xAxisAttack() {
 
         am.playBossProjectileSFX();
-
+        
         int obstacleIndex = Random.Range(0, 3);
         float projHeight = 1F;
 
@@ -175,6 +187,8 @@ public class DemonBoss : MonoBehaviour
 
     public void takeDamage() {
         bossHP -= 1;
+        dmgParticles.Play();
+        am.playSplatterSFX();
     }
 
     public void ResetBossHP() {

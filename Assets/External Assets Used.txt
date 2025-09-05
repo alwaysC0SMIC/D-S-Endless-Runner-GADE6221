@@ -6,11 +6,12 @@ External Assets/Packages Used:
 Github: 
 
 Used:
+Aseprite
+Unity 2022
 FL Studio - Music for the game was created by myself in FL Studio.	https://www.image-line.com/lp/front
 BlockBench - Modelled and textured rough assets in Blockbench for easy pixelart style (blender made unwrapping difficult). https://www.blockbench.net
 
 Door Open SFX - Modified in FL Studio, original: https://youtu.be/rKLCEzF1XGo?si=28zsZt-xCLktQzYg
-
 Artlist SFXs:
 Knights & Weapons - Blood, Stab, Sticky, Splatter - Soundtrack Creation
 Medieval Weapons - Sword Swing, Whoosh - HD Audio
@@ -28,3 +29,4 @@ Tutorial for shake: https://www.youtube.com/watch?v=9A9yj8KnM8c
 Unity Packages Used:
 2D Sprite
 TextMeshPro
+Aseprite Importer
